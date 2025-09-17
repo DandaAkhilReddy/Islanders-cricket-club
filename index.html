@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islanders Cricket Club - Bat Weight Analytics</title>
+    <meta name="description" content="Professional cricket bat weight analysis and comparison tool for Islanders Cricket Club members">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏏</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            color: #b8c6db;
+            font-size: 1.2em;
+        }
+
+        .club-badge {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 1em;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #b8c6db;
+            margin-top: 5px;
+            font-size: 0.95em;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 968px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bat-collection {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .collection-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .owner-badge {
+            font-size: 0.6em;
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .bat-item {
+            background: rgba(255, 255, 255, 0.08);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent;
+        }
+
+        .bat-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .bat-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .bat-weight {
+            color: #f5576c;
+            font-weight: 500;
+        }
+
+        .bat-category {
+            font-size: 0.85em;
+            color: #b8c6db;
+            margin-left: 10px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .visual-comparison {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .comparison-bar {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            background: linear-gradient(180deg, #f093fb, #f5576c);
+            border-radius: 10px 10px 0 0;
+            transition: all 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 5px;
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .comparison-bar:hover {
+            opacity: 1;
+            transform: scaleX(1.1);
+        }
+
+        .comparison-bar.user {
+            background: linear-gradient(180deg, #667eea, #764ba2);
+        }
+
+        .comparison-bar.annaya {
+            background: linear-gradient(180deg, #f093fb, #f5576c);
+        }
+
+        .comparison-bar.pro {
+            background: linear-gradient(180deg, #4facfe, #00f2fe);
+        }
+
+        .bar-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 0.75em;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .bar-weight {
+            font-size: 0.7em;
+            color: white;
+            margin-top: auto;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 15px;
+            border-radius: 5px;
+        }
+
+        .insights-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .insight-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(5px);
+        }
+
+        .insight-icon {
+            font-size: 2em;
+        }
+
+        .insight-text {
+            flex: 1;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .insight-detail {
+            color: #b8c6db;
+            font-size: 0.9em;
+        }
+
+        .weight-range-indicator {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        .extra-heavy {
+            background: linear-gradient(135deg, #eb3349, #f45c43);
+        }
+
+        .heavy {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .medium {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .light {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .weight-slider {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .slider-label {
+            color: #b8c6db;
+            margin-bottom: 10px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+        }
+
+        .weight-display {
+            color: #f5576c;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #f5576c;
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            color: #b8c6db;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b8c6db;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header animate-in">
+            <div class="club-badge">🏏</div>
+            <h1>Islanders Cricket Club</h1>
+            <h2>Cricket Bat Weight Analytics Center</h2>
+            <p>Professional Collection Analysis & Performance Insights</p>
+        </div>
+
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="showView('overview')">Overview</button>
+            <button class="tab-btn" onclick="showView('personal')">Member Collection</button>
+            <button class="tab-btn" onclick="showView('annaya')">Elite Collection</button>
+            <button class="tab-btn" onclick="showView('comparison')">Visual Comparison</button>
+            <button class="tab-btn" onclick="showView('pro')">Pro Players</button>
+        </div>
+
+        <div id="overview" class="view-content">
+            <div class="stats-grid animate-in">
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Member Bats</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Elite Bats</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1217g</div>
+                    <div class="stat-label">Heaviest (CA)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1064g</div>
+                    <div class="stat-label">Lightest (Kookaburra)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1208g</div>
+                    <div class="stat-label">Elite Heaviest (TON)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1139g</div>
+                    <div class="stat-label">Average Weight</div>
+                </div>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="bat-collection animate-in">
+                    <h2 class="collection-title">
+                        Member Collection
+                        <span class="owner-badge">Club Standard</span>
+                    </h2>
+                    <div id="userBatsList"></div>
+                </div>
+                <div class="bat-collection animate-in">
+                    <h2 class="collection-title">
+                        Elite Collection
+                        <span class="owner-badge">Premium</span>
+                    </h2>
+                    <div id="annayaBatsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="personal" class="view-content" style="display:none;">
+            <div class="chart-container animate-in">
+                <h2 class="collection-title">Complete Member Arsenal</h2>
+                <div class="filter-section">
+                    <div class="weight-slider">
+                        <div class="slider-label">Filter by Weight: <span class="weight-display" id="weightValue">All</span></div>
+                        <input type="range" min="1000" max="1300" value="1150" class="slider" id="weightSlider" oninput="filterBats(this.value)">
+                    </div>
+                </div>
+                <div id="personalDetailed"></div>
+            </div>
+        </div>
+
+        <div id="annaya" class="view-content" style="display:none;">
+            <div class="chart-container animate-in">
+                <h2 class="collection-title">Elite Professional Collection</h2>
+                <div id="annayaDetailed"></div>
+            </div>
+        </div>
+
+        <div id="comparison" class="view-content" style="display:none;">
+            <div class="chart-container animate-in">
+                <h2 class="collection-title">Visual Weight Comparison</h2>
+                <div class="visual-comparison" id="visualChart"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color user" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                        <span>Member Bats</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color annaya" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                        <span>Elite Bats</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color pro" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
+                        <span>Pro Players</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insights-panel animate-in">
+                <h2 class="collection-title">Comparative Insights</h2>
+                <div id="insights"></div>
+            </div>
+        </div>
+
+        <div id="pro" class="view-content" style="display:none;">
+            <div class="chart-container animate-in">
+                <h2 class="collection-title">Professional Players Reference</h2>
+                <div id="proPlayersGrid"></div>
+            </div>
+        </div>
+
+        <div class="footer animate-in">
+            <h3>Islanders Cricket Club</h3>
+            <p>Precision in Performance • Excellence in Equipment</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>🌐</span>
+                    <span>islanderscricketclub.org</span>
+                </div>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>info@islanderscricketclub.org</span>
+                </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <span>+1 (555) 123-CRICKET</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="batModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Member bats data
+        const userBats = [
+            { name: "Kookaburra", weight: 1064, note: "Without rubber", category: "light" },
+            { name: "SS Sky", weight: 1116, category: "medium" },
+            { name: "CA Bat", weight: 1217, category: "heavy" },
+            { name: "Malik", weight: 1075, category: "light" },
+            { name: "MRF", weight: 1175, category: "medium" },
+            { name: "SS TON", weight: 1208, category: "heavy" },
+            { name: "SF", weight: 1135, category: "medium" },
+            { name: "SS Blue Band SKY", weight: 1153, category: "medium" },
+            { name: "Kookaburra (Elite)", weight: 1105, category: "light" },
+            { name: "SS Team BAT #1", weight: 1154, category: "medium" },
+            { name: "SS Team BAT #2", weight: 1154, category: "medium" },
+            { name: "SS Thunder", weight: 1169, category: "medium" }
+        ];
+
+        // Elite collection bats
+        const annayaBats = [
+            { name: "TON", weight: 1208, category: "extra-heavy", note: "Extra Heavy" },
+            { name: "MRF", weight: 1175, category: "heavy", note: "Heavy" },
+            { name: "SS Blue Band SKY", weight: 1153, category: "heavy", note: "Heavy" },
+            { name: "SF", weight: 1135, category: "medium", note: "Medium" },
+            { name: "SS Sky", weight: 1116, category: "medium", note: "Medium" },
+            { name: "Malik", weight: 1075, category: "light", note: "Light" }
+        ];
+
+        // Professional players data
+        const proBats = [
+            { name: "Chris Gayle", weight: 1360, category: "extra-heavy" },
+            { name: "Andre Russell", weight: 1307, category: "extra-heavy" },
+            { name: "MS Dhoni", weight: 1235, category: "heavy" },
+            { name: "Virat Kohli", weight: 1210, category: "heavy" },
+            { name: "AB de Villiers", weight: 1195, category: "medium" },
+            { name: "David Warner", weight: 1180, category: "medium" },
+            { name: "Steve Smith", weight: 1165, category: "medium" },
+            { name: "Kane Williamson", weight: 1120, category: "light" }
+        ];
+
+        function getCategoryClass(weight) {
+            if (weight >= 1250) return 'extra-heavy';
+            if (weight >= 1180) return 'heavy';
+            if (weight >= 1100) return 'medium';
+            return 'light';
+        }
+
+        function getCategoryLabel(weight) {
+            if (weight >= 1250) return 'Extra Heavy';
+            if (weight >= 1180) return 'Heavy';
+            if (weight >= 1100) return 'Medium';
+            return 'Light';
+        }
+
+        function showView(view) {
+            document.querySelectorAll('.view-content').forEach(v => v.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(view).style.display = 'block';
+            event.target.classList.add('active');
+
+            if (view === 'comparison') {
+                renderVisualComparison();
+            } else if (view === 'personal') {
+                renderPersonalDetailed();
+            } else if (view === 'annaya') {
+                renderAnnayaDetailed();
+            } else if (view === 'pro') {
+                renderProPlayers();
+            }
+        }
+
+        function renderBatsList() {
+            // Member's bats
+            const userHTML = userBats.sort((a, b) => b.weight - a.weight).map(bat => `
+                <div class="bat-item" onclick="showBatDetails('${bat.name}', ${bat.weight}, 'user')">
+                    <div>
+                        <span class="bat-name">${bat.name}</span>
+                        ${bat.note ? `<span class="bat-category">(${bat.note})</span>` : ''}
+                    </div>
+                    <div>
+                        <span class="bat-weight">${bat.weight}g</span>
+                        <span class="weight-range-indicator ${getCategoryClass(bat.weight)}">${getCategoryLabel(bat.weight)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Elite bats
+            const annayaHTML = annayaBats.sort((a, b) => b.weight - a.weight).map(bat => `
+                <div class="bat-item" onclick="showBatDetails('${bat.name}', ${bat.weight}, 'annaya')">
+                    <div>
+                        <span class="bat-name">${bat.name}</span>
+                        ${bat.note ? `<span class="bat-category">(${bat.note})</span>` : ''}
+                    </div>
+                    <div>
+                        <span class="bat-weight">${bat.weight}g</span>
+                        <span class="weight-range-indicator ${bat.category}">${bat.note || getCategoryLabel(bat.weight)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('userBatsList').innerHTML = userHTML;
+            document.getElementById('annayaBatsList').innerHTML = annayaHTML;
+        }
+
+        function renderVisualComparison() {
+            const allBats = [
+                ...userBats.map(b => ({...b, owner: 'user'})),
+                ...annayaBats.map(b => ({...b, owner: 'annaya'})),
+                ...proBats.slice(0, 5).map(b => ({...b, owner: 'pro'}))
+            ];
+
+            const sortedBats = allBats.sort((a, b) => b.weight - a.weight);
+            const maxWeight = 1400;
+            const minWeight = 1000;
+            const range = maxWeight - minWeight;
+
+            const chartHTML = sortedBats.map((bat, index) => {
+                const height = ((bat.weight - minWeight) / range) * 350;
+                const left = index * 65 + 20;
+
+                return `
+                    <div class="comparison-bar ${bat.owner}"
+                         style="height: ${height}px; left: ${left}px;"
+                         onclick="showBatDetails('${bat.name}', ${bat.weight}, '${bat.owner}')">
+                        <span class="bar-label">${bat.name}</span>
+                        <span class="bar-weight">${bat.weight}g</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('visualChart').innerHTML = chartHTML;
+
+            // Generate insights
+            const userAvg = Math.round(userBats.reduce((sum, b) => sum + b.weight, 0) / userBats.length);
+            const annayaAvg = Math.round(annayaBats.reduce((sum, b) => sum + b.weight, 0) / annayaBats.length);
+
+            const insightsHTML = `
+                <div class="insight-item">
+                    <div class="insight-icon">📊</div>
+                    <div class="insight-text">
+                        <div class="insight-title">Average Weight Comparison</div>
+                        <div class="insight-detail">Member average: ${userAvg}g | Elite average: ${annayaAvg}g | Difference: ${Math.abs(userAvg - annayaAvg)}g</div>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">🏆</div>
+                    <div class="insight-text">
+                        <div class="insight-title">Heaviest Club Bat</div>
+                        <div class="insight-detail">Member CA Bat (1217g) vs Elite TON (1208g) - Member collection leads by 9g</div>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">⚖️</div>
+                    <div class="insight-text">
+                        <div class="insight-title">Weight Distribution</div>
+                        <div class="insight-detail">Member collection: wider range (1064-1217g) vs Elite: focused range (1075-1208g)</div>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">🎯</div>
+                    <div class="insight-text">
+                        <div class="insight-title">Preferred Category</div>
+                        <div class="insight-detail">Both collections favor medium weight (1100-1180g) - 67% of member bats, 50% of elite bats</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('insights').innerHTML = insightsHTML;
+        }
+
+        function renderPersonalDetailed() {
+            const sortedBats = [...userBats].sort((a, b) => b.weight - a.weight);
+            const html = sortedBats.map(bat => `
+                <div class="bat-item" style="margin-bottom: 20px;">
+                    <div>
+                        <span class="bat-name" style="font-size: 1.1em;">${bat.name}</span>
+                        ${bat.note ? `<span class="bat-category">(${bat.note})</span>` : ''}
+                    </div>
+                    <div>
+                        <span class="bat-weight" style="font-size: 1.1em;">${bat.weight}g</span>
+                        <span class="weight-range-indicator ${getCategoryClass(bat.weight)}">${getCategoryLabel(bat.weight)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('personalDetailed').innerHTML = html;
+        }
+
+        function renderAnnayaDetailed() {
+            const sortedBats = [...annayaBats].sort((a, b) => b.weight - a.weight);
+            const html = sortedBats.map(bat => `
+                <div class="bat-item" style="margin-bottom: 20px;">
+                    <div>
+                        <span class="bat-name" style="font-size: 1.1em;">${bat.name}</span>
+                        <span class="bat-category">(${bat.note})</span>
+                    </div>
+                    <div>
+                        <span class="bat-weight" style="font-size: 1.1em;">${bat.weight}g</span>
+                        <span class="weight-range-indicator ${bat.category}">${bat.note}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('annayaDetailed').innerHTML = html;
+        }
+
+        function renderProPlayers() {
+            const html = proBats.map(player => `
+                <div class="bat-item" style="margin-bottom: 20px;">
+                    <div>
+                        <span class="bat-name" style="font-size: 1.1em;">${player.name}</span>
+                    </div>
+                    <div>
+                        <span class="bat-weight" style="font-size: 1.1em;">${player.weight}g</span>
+                        <span class="weight-range-indicator ${getCategoryClass(player.weight)}">${getCategoryLabel(player.weight)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('proPlayersGrid').innerHTML = html;
+        }
+
+        function filterBats(weight) {
+            document.getElementById('weightValue').textContent = weight + 'g';
+            // Add filtering logic here
+        }
+
+        function showBatDetails(name, weight, owner) {
+            const modal = document.getElementById('batModal');
+            const content = document.getElementById('modalContent');
+
+            const ownerLabel = owner === 'user' ? 'Member Collection' : owner === 'annaya' ? "Elite Collection" : 'Professional Player';
+
+            content.innerHTML = `
+                <h2 style="color: #ffffff; margin-bottom: 20px;">${name}</h2>
+                <p style="color: #b8c6db; margin-bottom: 15px;">From: ${ownerLabel}</p>
+                <div style="font-size: 2em; font-weight: bold; background: linear-gradient(135deg, #f093fb, #f5576c); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    ${weight}g
+                </div>
+                <p style="color: #b8c6db; margin-top: 15px;">Category: ${getCategoryLabel(weight)}</p>
+                <div style="margin-top: 20px;">
+                    <p style="color: #ffffff;">Comparable Pro Players:</p>
+                    ${proBats.filter(p => Math.abs(p.weight - weight) < 50).map(p =>
+                        `<p style="color: #b8c6db;">• ${p.name}: ${p.weight}g</p>`
+                    ).join('')}
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('batModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('batModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Initialize
+        renderBatsList();
+    </script>
+</body>
+</html>
