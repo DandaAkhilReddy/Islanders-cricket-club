@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+server/data/
+
+# Uploads
+server/uploads/
+uploads/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+# Temporary files
+.tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+coverage/
+
+# Backups
+backups/
+
+# Husky
+.husky/
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager
+.npm
+.yarn/
+.pnp.*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock

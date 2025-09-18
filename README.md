@@ -1,152 +1,246 @@
-# Islanders Cricket Club - Bat Weight Analytics
+# 🏏 Islanders Cricket Club Website
 
-## 🏏 Professional Cricket Equipment Analysis
+A complete local-only cricket club website with admin CMS for managing players, matches, events, blog, and more.
 
-A comprehensive web application for analyzing cricket bat weights and comparing personal collections with professional players.
+## 🎯 Features
 
-## 🌟 Features
+- **Players**: Complete roster with statistics and profiles
+- **Matches**: Full match tracking with per-player stats entry
+- **Events & Photos**: Gallery management for club events
+- **Blog**: News and updates with markdown support
+- **Highlights**: Video highlights from matches
+- **Admin CMS**: Complete content management system
+- **Local-only**: No cloud dependencies, all data stored locally
 
-- **Interactive Dashboard**: Visual comparison of bat weights
-- **Member Collections**: Track and analyze club member equipment
-- **Professional Benchmarks**: Compare against international cricket stars
-- **Smart Analytics**: Weight categories, insights, and recommendations
-- **Responsive Design**: Works perfectly on desktop and mobile devices
+## 🚀 Quick Start
 
-## 🚀 Live Website
+### Requirements
+- Node.js 20+
+- npm or pnpm
+- Git
 
-Visit: **[islanderscricketclub.org](https://islanderscricketclub.org)**
+### Setup
+
+```bash
+# Clone and install
+git clone <repository-url>
+cd islanders-cricket-club
+npm install
+
+# Setup environment
+cp .env.example .env
+
+# Start development servers
+npm run dev
+```
+
+### Access
+
+- **Website**: http://localhost:5173
+- **API Server**: http://localhost:4000
+- **Admin Panel**: http://localhost:5173/admin
+
+### Default Admin Login
+
+Use the credentials from your `.env` file:
+- **Email**: `admin@islanders.cc` (or your ADMIN_EMAIL)
+- **Password**: `change-me-now` (or your ADMIN_PASSWORD)
+
+## 📊 Managing Match Statistics
+
+### Creating a Match
+1. Go to Admin → Matches
+2. Click "Add New Match"
+3. Fill in match details (date, opponent, venue, etc.)
+4. Save the match
+
+### Adding Player Statistics
+1. Open the match from the admin panel
+2. Click on "Player Stats" tab
+3. Add batting, bowling, and fielding stats for each player
+4. Save - player aggregate statistics will automatically update
+
+### Statistics Tracked
+- **Batting**: Runs, balls faced, 4s, 6s (auto-calculates strike rate)
+- **Bowling**: Overs, runs conceded, wickets, maidens (auto-calculates economy)
+- **Fielding**: Catches, stumpings
 
 ## 📁 Project Structure
 
 ```
-islanders-cricket-club/
-├── index.html          # Main dashboard application
-├── README.md           # Project documentation
-├── DEPLOYMENT.md       # Deployment instructions
-├── CNAME              # Custom domain configuration
-└── assets/            # Additional resources
+islanders/
+├── client/          # React frontend (Vite + TypeScript)
+├── server/          # Express backend (TypeScript + SQLite)
+├── .env.example     # Environment variables template
+└── README.md        # This file
 ```
 
-## 🛠️ Technology Stack
+## 🗄️ Data Storage
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Styling**: Modern CSS with glassmorphism design
-- **Charts**: Custom JavaScript visualizations
-- **Responsive**: Mobile-first design approach
-- **Performance**: Optimized for fast loading
+- **Database**: SQLite file at `server/data/islanders.db`
+- **Media Files**: Stored in `server/uploads/`
+- **Backups**: Created in `backups/` folder
 
-## 📊 Data Features
+## 📸 Managing Media
 
-### Bat Collections Analyzed
-- **Member Collection**: 12 bats (1064g - 1217g range)
-- **Elite Collection**: 6 premium bats (1075g - 1208g range)
-- **Professional Players**: 8 international cricket stars
+### Player Photos
+1. Admin → Players → Edit player
+2. Upload photo (auto-resized and optimized)
 
-### Weight Categories
-- **Light**: Under 1100g (ideal for quick shots)
-- **Medium**: 1100g - 1180g (balanced performance)
-- **Heavy**: 1180g - 1250g (power hitting)
-- **Extra Heavy**: Over 1250g (specialist power hitters)
+### Event Photos
+1. Admin → Events → Select event
+2. Upload multiple photos with captions
 
-## 🎯 Use Cases
+### Blog Images
+1. Admin → Blog → Create/Edit post
+2. Upload cover image and inline images
 
-1. **Equipment Selection**: Help players choose optimal bat weight
-2. **Performance Analysis**: Understand weight vs performance correlation
-3. **Club Standards**: Establish equipment guidelines for members
-4. **Educational Tool**: Learn from professional player preferences
+## 🔧 Available Scripts
 
-## 🔧 Local Development
+```bash
+# Development
+npm run dev          # Start both client and server
+npm run dev:client   # Start only client
+npm run dev:server   # Start only server
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/islanders-cricket-club.git
-   cd islanders-cricket-club
-   ```
+# Production
+npm run build        # Build both client and server
+npm run test         # Run all tests
 
-2. **Open in browser**:
-   - Simply open `index.html` in any modern web browser
-   - No build process required - pure HTML/CSS/JS
+# Data Management
+npm run seed         # Populate with sample data
+npm run backup       # Create backup ZIP file
+```
 
-3. **Local server** (optional):
-   ```bash
-   # Python
-   python -m http.server 8000
+## 🌐 Optional: Public Access with ngrok
 
-   # Node.js
-   npx serve .
+To make your site temporarily accessible from the internet:
 
-   # Live Server (VS Code extension)
-   # Right-click index.html → "Open with Live Server"
-   ```
+```bash
+# Install ngrok
+npm install -g ngrok
 
-## 🌐 Deployment Options
+# Expose frontend
+ngrok http 5173
 
-### Option 1: GitHub Pages (Free)
-1. Push code to GitHub repository
-2. Enable GitHub Pages in repository settings
-3. Configure custom domain in CNAME file
+# Expose backend (in another terminal)
+ngrok http 4000
 
-### Option 2: GoDaddy Hosting
-1. Upload files to `public_html` folder via File Manager
-2. Access through cPanel or FTP
-3. Domain automatically connected
+# Update .env with the ngrok URLs
+VITE_SERVER_URL=https://your-backend-url.ngrok.io
+ALLOWED_ORIGINS=http://localhost:5173,https://your-frontend-url.ngrok.io
+```
 
-### Option 3: Static Hosting Services
-- **Netlify**: Drag & drop deployment
-- **Vercel**: Git integration
-- **GitHub Pages**: Free with custom domain support
+## 📋 Initial Data
 
-## 📱 Mobile Optimization
+The system comes pre-populated with:
 
-- Responsive grid layouts
-- Touch-friendly interactive elements
-- Optimized for all screen sizes
-- Fast loading on mobile networks
+### Leadership Team
+- Dr. Vishnu Reddy (President)
+- Rajashekar Reddy (Vice President)
+- Akhil Reddy (Captain)
+- Dinesh Reddy (Head of Maintenance)
+- Faizan Mohammad (Vice Captain)
 
-## 🎨 Design Features
+### Sample Players
+- 14 players with various roles and statistics
+- Mix of batting and bowling styles
+- Unique jersey numbers
 
-- **Glassmorphism UI**: Modern, elegant design
-- **Dark Theme**: Easy on the eyes for extended use
-- **Smooth Animations**: Enhanced user experience
-- **Interactive Charts**: Click to explore detailed information
-- **Professional Branding**: Club-focused design elements
+### Sample Content
+- One complete match with player statistics
+- Sample blog post
+- HHA Medicine sponsor entry
 
-## 📈 Analytics & Insights
+## 🔐 Security Features
 
-The application provides:
-- Weight distribution analysis
-- Collection comparison metrics
-- Professional player benchmarks
-- Equipment recommendation engine
-- Performance correlation insights
+- JWT-based authentication with httpOnly cookies
+- Rate limiting (100 requests per 15 minutes)
+- File upload validation and sanitization
+- CORS protection
+- Helmet security headers
 
-## 🏅 Club Branding
+## 🧪 Testing
 
-Customized for Islanders Cricket Club:
-- Club logo and branding integration
-- Contact information and club details
-- Professional presentation for club website
-- Member-focused terminology and features
+```bash
+# Run all tests
+npm run test
 
-## 🔄 Future Enhancements
+# Run server tests only
+npm run test --workspace=server
 
-- **Player Profiles**: Individual member bat tracking
-- **Performance Metrics**: Correlation with match statistics
-- **Equipment Database**: Expanded brand and model information
-- **Mobile App**: Native mobile application
-- **API Integration**: Real-time cricket data feeds
+# Run client tests only
+npm run test --workspace=client
+```
 
-## 📞 Support & Contact
+## 💾 Backup & Restore
 
-**Islanders Cricket Club**
-- 🌐 Website: islanderscricketclub.org
-- 📧 Email: info@islanderscricketclub.org
-- 📱 Phone: +1 (555) 123-CRICKET
+### Creating Backups
+```bash
+npm run backup
+```
+This creates a ZIP file in `backups/` containing:
+- SQLite database
+- All uploaded media files
+- Timestamp for easy identification
 
-## 📄 License
+### Restoring from Backup
+1. Extract backup ZIP
+2. Replace `server/data/islanders.db`
+3. Replace `server/uploads/` folder
+4. Restart the application
 
-MIT License - Open source for cricket community use
+## 🎨 Customization
+
+### Branding
+- Edit `client/src/styles/globals.css` for colors and fonts
+- Replace logo files in `server/uploads/placeholders/`
+- Update team name and details in the leadership section
+
+### Adding Features
+- Database schema: `server/src/db.ts`
+- API routes: `server/src/routes/`
+- Frontend pages: `client/src/pages/`
+- Components: `client/src/components/`
+
+## 🆘 Troubleshooting
+
+### Database Issues
+```bash
+# Reset database (removes all data)
+rm server/data/islanders.db
+npm run seed
+```
+
+### Upload Issues
+- Check file permissions on `server/uploads/`
+- Verify `MAX_UPLOAD_MB` setting in `.env`
+- Ensure supported file types (images: jpg, png, gif, webp)
+
+### Build Issues
+```bash
+# Clear caches
+rm -rf client/dist server/dist node_modules/*/dist
+npm install
+npm run build
+```
+
+### Port Conflicts
+- Change `PORT` in `.env` if 4000 is occupied
+- Update `VITE_SERVER_URL` accordingly
+- Restart both client and server
+
+## 📞 Support
+
+- Check the console logs for detailed error messages
+- Ensure all environment variables are set correctly
+- Verify Node.js version is 20 or higher
+- Make sure all dependencies are installed (`npm install`)
+
+## 🏆 Team Data
+
+This system is pre-configured for the Islanders Cricket Club with real team member data. Update the leadership and player information through the admin panel to match your current roster.
 
 ---
 
-**Precision in Performance • Excellence in Equipment**
+**Built with ❤️ for the Islanders Cricket Club**
