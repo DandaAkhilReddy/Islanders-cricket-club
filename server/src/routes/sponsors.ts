@@ -5,9 +5,9 @@ import { uploadSingle } from '../middleware/upload';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const sponsors = SponsorModel.getAll();
+    const sponsors = await SponsorModel.getAll();
 
     res.json({
       success: true,
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
   }
 });
 
-router.post('/', authenticateToken, requireAdmin, uploadSingle('sponsorLogo'), (req: AuthRequest, res) => {
+router.post('/', authenticateToken, requireAdmin, uploadSingle('sponsorLogo'), async (req: AuthRequest, res) => {
   try {
     let sponsorData = req.body;
 
@@ -30,7 +30,7 @@ router.post('/', authenticateToken, requireAdmin, uploadSingle('sponsorLogo'), (
       sponsorData.logo_url = `/uploads/sponsors/${req.file.filename}`;
     }
 
-    const sponsor = SponsorModel.create(sponsorData);
+    const sponsor = await SponsorModel.create(sponsorData);
 
     res.status(201).json({
       success: true,

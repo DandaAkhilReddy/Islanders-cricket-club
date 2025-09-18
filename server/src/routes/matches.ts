@@ -34,12 +34,12 @@ const playerStatsSchema = z.object({
   fielding_stumpings: z.number().default(0)
 });
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 50;
     const offset = parseInt(req.query.offset as string) || 0;
 
-    const matches = MatchModel.getAll(limit, offset);
+    const matches = await MatchModel.getAll(limit, offset);
 
     res.json({
       success: true,
@@ -54,10 +54,10 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/recent', (req, res) => {
+router.get('/recent', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 5;
-    const matches = MatchModel.getRecent(limit);
+    const matches = await MatchModel.getRecent(limit);
 
     res.json({
       success: true,
@@ -72,10 +72,10 @@ router.get('/recent', (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const match = MatchModel.getById(id);
+    const match = await MatchModel.getById(id);
 
     if (!match) {
       return res.status(404).json({
@@ -97,10 +97,10 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.get('/:id/stats', (req, res) => {
+router.get('/:id/stats', async (req, res) => {
   try {
     const matchId = parseInt(req.params.id);
-    const stats = PlayerMatchStatsModel.getByMatch(matchId);
+    const stats = await PlayerMatchStatsModel.getByMatch(matchId);
 
     res.json({
       success: true,

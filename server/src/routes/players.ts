@@ -39,10 +39,10 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/top-batsmen', (req, res) => {
+router.get('/top-batsmen', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
-    const players = PlayerModel.getTopBatsmen(limit);
+    const players = await PlayerModel.getTopBatsmen(limit);
 
     res.json({
       success: true,
@@ -57,10 +57,10 @@ router.get('/top-batsmen', (req, res) => {
   }
 });
 
-router.get('/top-bowlers', (req, res) => {
+router.get('/top-bowlers', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
-    const players = PlayerModel.getTopBowlers(limit);
+    const players = await PlayerModel.getTopBowlers(limit);
 
     res.json({
       success: true,
@@ -75,10 +75,10 @@ router.get('/top-bowlers', (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const player = PlayerModel.getById(id);
+    const player = await PlayerModel.getById(id);
 
     if (!player) {
       return res.status(404).json({
@@ -100,7 +100,7 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.post('/', authenticateToken, requireAdmin, uploadSingle('playerPhoto'), (req: AuthRequest, res) => {
+router.post('/', authenticateToken, requireAdmin, uploadSingle('playerPhoto'), async (req: AuthRequest, res) => {
   try {
     let playerData = playerSchema.parse(req.body);
 
@@ -112,7 +112,7 @@ router.post('/', authenticateToken, requireAdmin, uploadSingle('playerPhoto'), (
     }
 
     if (playerData.jersey_number) {
-      const existingPlayer = PlayerModel.getByJerseyNumber(playerData.jersey_number);
+      const existingPlayer = await PlayerModel.getByJerseyNumber(playerData.jersey_number);
       if (existingPlayer) {
         return res.status(400).json({
           success: false,
@@ -121,7 +121,7 @@ router.post('/', authenticateToken, requireAdmin, uploadSingle('playerPhoto'), (
       }
     }
 
-    const player = PlayerModel.create(playerData as any);
+    const player = await PlayerModel.create(playerData as any);
 
     res.status(201).json({
       success: true,
@@ -144,7 +144,7 @@ router.post('/', authenticateToken, requireAdmin, uploadSingle('playerPhoto'), (
   }
 });
 
-router.put('/:id', authenticateToken, requireAdmin, uploadSingle('playerPhoto'), (req: AuthRequest, res) => {
+router.put('/:id', authenticateToken, requireAdmin, uploadSingle('playerPhoto'), async (req: AuthRequest, res) => {
   try {
     const id = parseInt(req.params.id);
     let updateData = req.body;
@@ -154,7 +154,7 @@ router.put('/:id', authenticateToken, requireAdmin, uploadSingle('playerPhoto'),
     }
 
     if (updateData.jersey_number) {
-      const existingPlayer = PlayerModel.getByJerseyNumber(updateData.jersey_number);
+      const existingPlayer = await PlayerModel.getByJerseyNumber(updateData.jersey_number);
       if (existingPlayer && existingPlayer.id !== id) {
         return res.status(400).json({
           success: false,
@@ -163,7 +163,7 @@ router.put('/:id', authenticateToken, requireAdmin, uploadSingle('playerPhoto'),
       }
     }
 
-    const player = PlayerModel.update(id, updateData);
+    const player = await PlayerModel.update(id, updateData);
 
     if (!player) {
       return res.status(404).json({
@@ -185,10 +185,10 @@ router.put('/:id', authenticateToken, requireAdmin, uploadSingle('playerPhoto'),
   }
 });
 
-router.delete('/:id', authenticateToken, requireAdmin, (req: AuthRequest, res) => {
+router.delete('/:id', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
     const id = parseInt(req.params.id);
-    const success = PlayerModel.delete(id);
+    const success = await PlayerModel.delete(id);
 
     if (!success) {
       return res.status(404).json({

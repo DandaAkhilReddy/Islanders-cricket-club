@@ -5,9 +5,9 @@ import { uploadSingle } from '../middleware/upload';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const leadership = LeadershipModel.getAll();
+    const leadership = await LeadershipModel.getAll();
 
     res.json({
       success: true,
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
   }
 });
 
-router.post('/', authenticateToken, requireAdmin, uploadSingle('leadershipPhoto'), (req: AuthRequest, res) => {
+router.post('/', authenticateToken, requireAdmin, uploadSingle('leadershipPhoto'), async (req: AuthRequest, res) => {
   try {
     let leadershipData = req.body;
 
@@ -30,7 +30,7 @@ router.post('/', authenticateToken, requireAdmin, uploadSingle('leadershipPhoto'
       leadershipData.photo_url = `/uploads/leadership/${req.file.filename}`;
     }
 
-    const leader = LeadershipModel.create(leadershipData);
+    const leader = await LeadershipModel.create(leadershipData);
 
     res.status(201).json({
       success: true,

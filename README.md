@@ -1,246 +1,305 @@
-# 🏏 Islanders Cricket Club Website
+# 🏏 Islanders Cricket Club
 
-A complete local-only cricket club website with admin CMS for managing players, matches, events, blog, and more.
+A complete **local-only** cricket club management system with admin CMS for managing players, matches, statistics, events, blog posts, and more. Built with Express.js backend and designed for easy deployment without any cloud dependencies.
 
-## 🎯 Features
+![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)
+![SQLite](https://img.shields.io/badge/Database-SQLite-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-- **Players**: Complete roster with statistics and profiles
-- **Matches**: Full match tracking with per-player stats entry
-- **Events & Photos**: Gallery management for club events
-- **Blog**: News and updates with markdown support
-- **Highlights**: Video highlights from matches
-- **Admin CMS**: Complete content management system
-- **Local-only**: No cloud dependencies, all data stored locally
+## ✨ Features
+
+### 🏆 Core Functionality
+- **Player Management**: Complete roster with statistics, photos, and profiles
+- **Match Tracking**: Full match management with detailed per-player statistics
+- **Statistics Engine**: Automatic calculation of batting/bowling averages, strike rates, economy rates
+- **Events & Gallery**: Photo management for club events and activities
+- **Blog System**: News and updates with markdown support and cover images
+- **Video Highlights**: Match highlights with thumbnails and descriptions
+- **Leadership Team**: Management team profiles and contact information
+- **Sponsors**: Sponsor management with logos and descriptions
+
+### 🔒 Security & Authentication
+- JWT-based authentication with httpOnly cookies
+- Rate limiting (100 requests per 15 minutes)
+- File upload validation and sanitization
+- CORS protection and security headers
+- Admin-only routes for content management
+
+### 💾 Data Management
+- **Local SQLite Database**: No cloud dependencies
+- **Automatic Backups**: ZIP file creation with database and uploads
+- **Data Seeding**: Pre-populated with real team data
+- **File Uploads**: Organized photo storage system
 
 ## 🚀 Quick Start
 
-### Requirements
-- Node.js 20+
-- npm or pnpm
-- Git
+### Prerequisites
 
-### Setup
+- **Node.js 20+** (Required)
+- **npm** or **pnpm**
+- **Git**
 
-```bash
-# Clone and install
-git clone <repository-url>
-cd islanders-cricket-club
-npm install
+### Installation
 
-# Setup environment
-cp .env.example .env
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/DandaAkhilReddy/Islanders-cricket-club.git
+   cd islanders-cricket-club
+   ```
 
-# Start development servers
-npm run dev
-```
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-### Access
+3. **Environment Setup**
+   ```bash
+   # Copy environment variables
+   cp .env.example .env
 
-- **Website**: http://localhost:5173
+   # Edit .env file if needed (optional - defaults work for local development)
+   ```
+
+4. **Initialize Database with Sample Data**
+   ```bash
+   npm run seed
+   ```
+
+5. **Start the Development Server**
+   ```bash
+   npm run dev:server
+   ```
+
+### 🎯 Access Points
+
 - **API Server**: http://localhost:4000
-- **Admin Panel**: http://localhost:5173/admin
+- **API Health Check**: http://localhost:4000/api/health
+- **Database**: `server/data/islanders.db`
+- **Uploads**: `server/uploads/`
 
-### Default Admin Login
+### 🔑 Admin Access
 
-Use the credentials from your `.env` file:
-- **Email**: `admin@islanders.cc` (or your ADMIN_EMAIL)
-- **Password**: `change-me-now` (or your ADMIN_PASSWORD)
+**Default Admin Credentials:**
+- **Email**: `admin@islanders.cc`
+- **Password**: `change-me-now`
 
-## 📊 Managing Match Statistics
-
-### Creating a Match
-1. Go to Admin → Matches
-2. Click "Add New Match"
-3. Fill in match details (date, opponent, venue, etc.)
-4. Save the match
-
-### Adding Player Statistics
-1. Open the match from the admin panel
-2. Click on "Player Stats" tab
-3. Add batting, bowling, and fielding stats for each player
-4. Save - player aggregate statistics will automatically update
-
-### Statistics Tracked
-- **Batting**: Runs, balls faced, 4s, 6s (auto-calculates strike rate)
-- **Bowling**: Overs, runs conceded, wickets, maidens (auto-calculates economy)
-- **Fielding**: Catches, stumpings
+⚠️ **Important**: Change these credentials in production by updating your `.env` file.
 
 ## 📁 Project Structure
 
 ```
-islanders/
-├── client/          # React frontend (Vite + TypeScript)
-├── server/          # Express backend (TypeScript + SQLite)
-├── .env.example     # Environment variables template
-└── README.md        # This file
+islanders-cricket-club/
+├── server/                 # Express.js Backend
+│   ├── src/
+│   │   ├── routes/        # API endpoints
+│   │   ├── models/        # Database models
+│   │   ├── middleware/    # Auth, upload, etc.
+│   │   ├── utils/         # Seed & backup scripts
+│   │   ├── types.ts       # TypeScript definitions
+│   │   ├── db.ts          # Database setup
+│   │   ├── env.ts         # Environment validation
+│   │   └── index.ts       # Server entry point
+│   ├── data/              # SQLite database (auto-created)
+│   ├── uploads/           # File uploads (auto-created)
+│   ├── package.json
+│   └── tsconfig.json
+├── .env.example           # Environment template
+├── .env                   # Your environment config
+├── .gitignore            # Git ignore rules
+├── package.json          # Root workspace config
+└── README.md             # This file
 ```
 
-## 🗄️ Data Storage
+## 🛠️ Available Scripts
 
-- **Database**: SQLite file at `server/data/islanders.db`
-- **Media Files**: Stored in `server/uploads/`
-- **Backups**: Created in `backups/` folder
-
-## 📸 Managing Media
-
-### Player Photos
-1. Admin → Players → Edit player
-2. Upload photo (auto-resized and optimized)
-
-### Event Photos
-1. Admin → Events → Select event
-2. Upload multiple photos with captions
-
-### Blog Images
-1. Admin → Blog → Create/Edit post
-2. Upload cover image and inline images
-
-## 🔧 Available Scripts
-
+### Development
 ```bash
-# Development
-npm run dev          # Start both client and server
-npm run dev:client   # Start only client
-npm run dev:server   # Start only server
-
-# Production
-npm run build        # Build both client and server
-npm run test         # Run all tests
-
-# Data Management
-npm run seed         # Populate with sample data
-npm run backup       # Create backup ZIP file
+npm run dev:server      # Start backend development server
+npm run build          # Build the server for production
+npm run start          # Start production server (after build)
 ```
 
-## 🌐 Optional: Public Access with ngrok
-
-To make your site temporarily accessible from the internet:
-
+### Database Management
 ```bash
-# Install ngrok
-npm install -g ngrok
-
-# Expose frontend
-ngrok http 5173
-
-# Expose backend (in another terminal)
-ngrok http 4000
-
-# Update .env with the ngrok URLs
-VITE_SERVER_URL=https://your-backend-url.ngrok.io
-ALLOWED_ORIGINS=http://localhost:5173,https://your-frontend-url.ngrok.io
+npm run seed           # Populate database with sample data
+npm run backup         # Create backup ZIP file
 ```
 
-## 📋 Initial Data
+### Testing
+```bash
+npm test              # Run all tests
+```
 
-The system comes pre-populated with:
+## 📊 API Endpoints
+
+### Authentication
+- `POST /api/auth/login` - Admin login
+- `POST /api/auth/logout` - Logout
+- `GET /api/auth/me` - Get current user
+
+### Players
+- `GET /api/players` - List all players
+- `GET /api/players/:id` - Get player details
+- `GET /api/players/top-batsmen` - Top batsmen by runs
+- `GET /api/players/top-bowlers` - Top bowlers by wickets
+- `POST /api/players` - Create player (Admin)
+- `PUT /api/players/:id` - Update player (Admin)
+- `DELETE /api/players/:id` - Delete player (Admin)
+
+### Matches
+- `GET /api/matches` - List all matches
+- `GET /api/matches/:id` - Get match details
+- `GET /api/matches/:id/stats` - Get match statistics
+- `GET /api/matches/recent` - Recent matches
+- `POST /api/matches` - Create match (Admin)
+- `POST /api/matches/:id/stats` - Add player stats (Admin)
+
+### Events
+- `GET /api/events` - List all events
+- `GET /api/events/:id` - Get event details
+- `POST /api/events` - Create event (Admin)
+
+### Blog
+- `GET /api/blog` - List published posts
+- `GET /api/blog/:id` - Get post by ID
+- `GET /api/blog/slug/:slug` - Get post by slug
+- `POST /api/blog` - Create post (Admin)
+
+### Other
+- `GET /api/leadership` - Leadership team
+- `GET /api/sponsors` - Sponsors list
+- `GET /api/highlights` - Video highlights
+- `GET /api/stats/player/:id` - Player statistics
+
+## 👥 Pre-loaded Data
+
+The system comes with realistic sample data:
 
 ### Leadership Team
-- Dr. Vishnu Reddy (President)
-- Rajashekar Reddy (Vice President)
-- Akhil Reddy (Captain)
-- Dinesh Reddy (Head of Maintenance)
-- Faizan Mohammad (Vice Captain)
+- **Dr. Vishnu Reddy** - President
+- **Rajashekar Reddy** - Vice President
+- **Akhil Reddy** - Captain
+- **Dinesh Reddy** - Head of Maintenance
+- **Faizan Mohammad** - Vice Captain
 
-### Sample Players
-- 14 players with various roles and statistics
-- Mix of batting and bowling styles
-- Unique jersey numbers
+### Players
+- **14 players** with unique jersey numbers (1-14)
+- Mix of batting and bowling specialists
+- Sample statistics and roles
+- Various playing styles (left/right handed, different bowling types)
 
 ### Sample Content
-- One complete match with player statistics
-- Sample blog post
-- HHA Medicine sponsor entry
+- **1 complete match** with detailed player statistics
+- **1 sample blog post** welcoming visitors
+- **HHA Medicine** as featured sponsor
+- All player aggregate statistics auto-calculated
 
-## 🔐 Security Features
+## 📈 Statistics System
 
-- JWT-based authentication with httpOnly cookies
-- Rate limiting (100 requests per 15 minutes)
-- File upload validation and sanitization
-- CORS protection
-- Helmet security headers
+### Automatic Calculation
+The system automatically calculates and updates:
+- **Batting Average**: Total runs ÷ innings played
+- **Strike Rate**: (Total runs ÷ balls faced) × 100
+- **Bowling Average**: Runs conceded ÷ wickets taken
+- **Economy Rate**: Runs conceded ÷ overs bowled
 
-## 🧪 Testing
+### Per-Match Tracking
+For each match, track individual player:
+- **Batting**: Runs, balls faced, 4s, 6s, how out
+- **Bowling**: Overs, runs conceded, wickets, maidens
+- **Fielding**: Catches, stumpings
 
-```bash
-# Run all tests
-npm run test
+## 🔧 Configuration
 
-# Run server tests only
-npm run test --workspace=server
+### Environment Variables
 
-# Run client tests only
-npm run test --workspace=client
-```
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Server port | `4000` |
+| `JWT_SECRET` | JWT signing secret | Required |
+| `ADMIN_EMAIL` | Admin login email | Required |
+| `ADMIN_PASSWORD` | Admin login password | Required |
+| `SQLITE_PATH` | Database file path | `./data/islanders.db` |
+| `UPLOAD_DIR` | Upload directory | `./uploads` |
+| `MAX_UPLOAD_MB` | Max file size (MB) | `20` |
+| `CLIENT_URL` | Frontend URL | `http://localhost:5173` |
+| `ALLOWED_ORIGINS` | CORS origins | `http://localhost:5173` |
 
-## 💾 Backup & Restore
+### File Uploads
+Supported formats:
+- **Images**: JPG, PNG, GIF, WebP
+- **Videos**: MP4, WebM (for highlights)
+- **Max size**: 20MB (configurable)
+
+## 📦 Backup & Restore
 
 ### Creating Backups
 ```bash
 npm run backup
 ```
-This creates a ZIP file in `backups/` containing:
+Creates a timestamped ZIP file in `backups/` containing:
 - SQLite database
 - All uploaded media files
-- Timestamp for easy identification
+- Configuration files
 
 ### Restoring from Backup
-1. Extract backup ZIP
+1. Extract backup ZIP file
 2. Replace `server/data/islanders.db`
-3. Replace `server/uploads/` folder
+3. Replace `server/uploads/` directory
 4. Restart the application
 
-## 🎨 Customization
+## 🚨 Troubleshooting
 
-### Branding
-- Edit `client/src/styles/globals.css` for colors and fonts
-- Replace logo files in `server/uploads/placeholders/`
-- Update team name and details in the leadership section
+### Common Issues
 
-### Adding Features
-- Database schema: `server/src/db.ts`
-- API routes: `server/src/routes/`
-- Frontend pages: `client/src/pages/`
-- Components: `client/src/components/`
-
-## 🆘 Troubleshooting
-
-### Database Issues
+**Database Issues**
 ```bash
 # Reset database (removes all data)
 rm server/data/islanders.db
 npm run seed
 ```
 
-### Upload Issues
+**Upload Issues**
 - Check file permissions on `server/uploads/`
-- Verify `MAX_UPLOAD_MB` setting in `.env`
-- Ensure supported file types (images: jpg, png, gif, webp)
+- Verify `MAX_UPLOAD_MB` in `.env`
+- Ensure supported file types
 
-### Build Issues
+**Port Conflicts**
+- Change `PORT` in `.env` if 4000 is occupied
+- Update `CLIENT_URL` and `ALLOWED_ORIGINS` accordingly
+
+**Build Issues**
 ```bash
-# Clear caches
-rm -rf client/dist server/dist node_modules/*/dist
+# Clear and reinstall dependencies
+rm -rf node_modules server/node_modules
 npm install
-npm run build
 ```
 
-### Port Conflicts
-- Change `PORT` in `.env` if 4000 is occupied
-- Update `VITE_SERVER_URL` accordingly
-- Restart both client and server
+### Debug Mode
+Set `NODE_ENV=development` in `.env` for detailed error messages.
 
-## 📞 Support
+## 🤝 Contributing
 
-- Check the console logs for detailed error messages
-- Ensure all environment variables are set correctly
-- Verify Node.js version is 20 or higher
-- Make sure all dependencies are installed (`npm install`)
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-## 🏆 Team Data
+## 📝 License
 
-This system is pre-configured for the Islanders Cricket Club with real team member data. Update the leadership and player information through the admin panel to match your current roster.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built for the **Islanders Cricket Club**
+- Designed for local-only deployment
+- No cloud dependencies required
+- Ready for immediate use
 
 ---
 
-**Built with ❤️ for the Islanders Cricket Club**
+**🏏 Built with ❤️ for the Islanders Cricket Club**
+
+For questions or support, please check the troubleshooting section above or open an issue on GitHub.
