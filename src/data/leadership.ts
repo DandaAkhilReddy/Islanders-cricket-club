@@ -2,6 +2,13 @@ import type { LeadershipMember } from '../types';
 
 export const leadershipHierarchy: Omit<LeadershipMember, 'id'>[] = [
   {
+    name: 'Dr. Vishnu Reddy',
+    title: 'Principal & Chief Mentor',
+    emoji: 'ud83cudf93',
+    bio: 'Principal and Chief Mentor providing vision and guidance to Islanders Cricket Club.',
+    order: 0,
+  },
+  {
     name: 'Akhil Reddy Danda',
     title: 'Captain',
     emoji: '🏆',

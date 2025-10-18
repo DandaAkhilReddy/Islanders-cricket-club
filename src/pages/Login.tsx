@@ -23,11 +23,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-amber-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 bg-orange-700 rounded-full flex items-center justify-center mx-auto mb-4">
               <LogIn className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
@@ -65,7 +65,7 @@ export default function Login() {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            <a href="mailto:" className="text-green-700 hover:text-green-800 underline">
+            <a href="mailto:" className="text-orange-700 hover:text-orange-800 underline">
               
             </a>
           </p>

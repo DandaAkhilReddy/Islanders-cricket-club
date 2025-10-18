@@ -40,7 +40,7 @@ export default function StatCard({
         {trend && (
           <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
             trend.isPositive
-              ? 'bg-green-50 text-green-700'
+              ? 'bg-orange-50 text-orange-700'
               : 'bg-red-50 text-red-700'
           }`}>
             {trend.isPositive ? (

@@ -34,7 +34,7 @@ export default function Avatar({ src, alt, name, size = 'md', className = '' }: 
   };
 
   return (
-    <div className={`${sizeClasses[size]} rounded-full overflow-hidden bg-gradient-to-br from-island-blue-400 to-cricket-green-400 flex items-center justify-center font-bold text-white ${className}`}>
+    <div className={`${sizeClasses[size]} rounded-full overflow-hidden bg-gradient-to-br from-island-blue-400 to-cricket-blue-400 flex items-center justify-center font-bold text-white ${className}`}>
       {src ? (
         <img
           src={src}

@@ -123,7 +123,7 @@ export default function LiveMatch() {
                             {batsman.dismissal?.bowlerName && ` b ${batsman.dismissal.bowlerName}`}
                           </span>
                         ) : (
-                          <span className="text-green-400">Batting</span>
+                          <span className="text-blue-400">Batting</span>
                         )}
                       </td>
                     </tr>
@@ -208,7 +208,7 @@ export default function LiveMatch() {
                       : ball.totalRuns >= 6
                       ? 'bg-purple-500 text-white'
                       : ball.totalRuns >= 4
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-orange-500 text-white'
                       : ball.totalRuns > 0
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-600 text-white'

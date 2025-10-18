@@ -145,7 +145,7 @@ export default function ScoringPanel({ liveMatch, onRecordBall }: ScoringPanelPr
                   run === 6
                     ? 'bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 shadow-purple-500/50'
                     : run === 4
-                    ? 'bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-green-500/50'
+                    ? 'bg-gradient-to-br from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 shadow-orange-500/50'
                     : run === 0
                     ? 'bg-gradient-to-br from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800'
                     : 'bg-gradient-to-br from-island-blue-600 to-island-blue-700 hover:from-island-blue-700 hover:to-island-blue-800 shadow-island-blue-500/50'

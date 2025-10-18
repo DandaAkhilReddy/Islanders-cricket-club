@@ -227,7 +227,7 @@ export default function LiveScoring() {
           </p>
           <button
             onClick={initializeLiveMatch}
-            className="w-full bg-gradient-to-r from-island-blue-500 to-cricket-green-500 text-white font-bold py-4 px-6 rounded-lg hover:shadow-xl transition-shadow"
+            className="w-full bg-gradient-to-r from-island-blue-500 to-cricket-orange-500 text-white font-bold py-4 px-6 rounded-lg hover:shadow-xl transition-shadow"
           >
             Start Match
           </button>

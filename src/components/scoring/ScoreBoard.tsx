@@ -16,7 +16,7 @@ export default function ScoreBoard({ liveMatch }: ScoreBoardProps) {
   }
 
   return (
-    <div className="bg-gradient-to-r from-island-blue-600 to-cricket-green-600 text-white">
+    <div className="bg-gradient-to-r from-island-blue-600 to-cricket-orange-600 text-white">
       {/* Live Badge */}
       <div className="px-4 pt-4 flex justify-between items-center">
         <Badge variant="error" className="animate-pulse">
@@ -142,7 +142,7 @@ export default function ScoreBoard({ liveMatch }: ScoreBoardProps) {
                     : ball.totalRuns >= 6
                     ? 'bg-purple-500 text-white'
                     : ball.totalRuns >= 4
-                    ? 'bg-green-500 text-white'
+                    ? 'bg-orange-500 text-white'
                     : ball.totalRuns > 0
                     ? 'bg-blue-500 text-white'
                     : 'bg-gray-600 text-white'

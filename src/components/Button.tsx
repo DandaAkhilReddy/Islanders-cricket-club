@@ -26,7 +26,7 @@ export default function Button({
 
   const variantClasses = {
     primary: 'bg-island-blue-500 hover:bg-island-blue-600 text-white',
-    secondary: 'bg-cricket-green-500 hover:bg-cricket-green-600 text-white',
+    secondary: 'bg-cricket-orange-500 hover:bg-cricket-orange-600 text-white',
     gold: 'bg-texas-gold-500 hover:bg-texas-gold-600 text-gray-900',
     outline: 'border-2 border-island-blue-500 text-island-blue-500 hover:bg-island-blue-50 dark:hover:bg-island-blue-900/20',
     ghost: 'text-island-blue-500 hover:bg-island-blue-50 dark:hover:bg-island-blue-900/20',

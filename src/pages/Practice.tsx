@@ -53,7 +53,7 @@ export default function Practice() {
 
   const practiceTypeColors: Record<string, string> = {
     'Batting': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-    'Bowling': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    'Bowling': 'bg-orange-100 text-orange-800 dark:bg-blue-900/30 dark:text-blue-400',
     'Fielding': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
     'Fitness': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
     'Full Practice': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
@@ -63,7 +63,7 @@ export default function Practice() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-cricket-green-200 border-t-cricket-green-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-cricket-blue-200 border-t-cricket-orange-500 rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Loading practices...</p>
         </div>
       </div>
@@ -236,7 +236,7 @@ export default function Practice() {
                       <span className="text-sm text-gray-600 dark:text-gray-400">
                         {practice.location}
                       </span>
-                      <div className="text-sm font-semibold text-cricket-green-600 dark:text-cricket-green-400">
+                      <div className="text-sm font-semibold text-cricket-orange-600 dark:text-cricket-blue-400">
                         {Math.round((practice.attendance.length / 14) * 100)}% attendance
                       </div>
                     </div>

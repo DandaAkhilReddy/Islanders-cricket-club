@@ -287,7 +287,7 @@ export default function AdminDashboard() {
                   <span className="text-sm font-bold text-gray-900">0%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '0%' }}></div>
+                  <div className="bg-orange-500 h-2 rounded-full" style={{ width: '0%' }}></div>
                 </div>
               </div>
               <div>

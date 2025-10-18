@@ -73,7 +73,7 @@ export default function ScorerHome() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-island-blue-500 to-cricket-green-500 text-white">
+      <div className="bg-gradient-to-r from-island-blue-500 to-cricket-orange-500 text-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between">
             <div>
@@ -179,7 +179,7 @@ export default function ScorerHome() {
         </div>
 
         {/* Quick Guide */}
-        <Card className="p-6 bg-gradient-to-br from-island-blue-50 to-cricket-green-50 dark:from-island-blue-900/20 dark:to-cricket-green-900/20 border-2 border-island-blue-200 dark:border-island-blue-700">
+        <Card className="p-6 bg-gradient-to-br from-island-blue-50 to-cricket-orange-50 dark:from-island-blue-900/20 dark:to-cricket-blue-900/20 border-2 border-island-blue-200 dark:border-island-blue-700">
           <h3 className="text-lg font-heading font-bold text-gray-900 dark:text-white mb-3">
             Scorer Quick Guide 📊
           </h3>

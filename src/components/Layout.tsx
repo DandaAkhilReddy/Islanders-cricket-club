@@ -12,11 +12,11 @@ export default function Layout({ children }: LayoutProps) {
       <main>
         {children}
       </main>
-      <footer className="bg-green-900 text-white py-8 mt-12">
+      <footer className="bg-blue-900 text-white py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-xl font-bold mb-2">Islanders Cricket Club</p>
-          <p className="text-green-200 mb-4">Corpus Christi, Texas</p>
-          <p className="text-sm text-green-300">
+          <p className="text-blue-200 mb-4">Corpus Christi, Texas</p>
+          <p className="text-sm text-blue-300">
             <a href="mailto:" className="underline hover:text-white"></a>
           </p>
         </div>

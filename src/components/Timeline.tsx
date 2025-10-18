@@ -25,7 +25,7 @@ export default function Timeline({ items, className = '' }: TimelineProps) {
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         const statusColors = {
-          completed: 'bg-green-500 border-green-500',
+          completed: 'bg-orange-500 border-orange-500',
           ongoing: 'bg-yellow-500 border-yellow-500',
           upcoming: 'bg-gray-300 dark:bg-gray-600 border-gray-300 dark:border-gray-600',
         };
@@ -44,7 +44,7 @@ export default function Timeline({ items, className = '' }: TimelineProps) {
               {/* Dot */}
               <div className={`w-4 h-4 rounded-full border-2 ${statusColor} z-10`}>
                 {item.status === 'completed' && (
-                  <div className="w-full h-full rounded-full bg-green-500 flex items-center justify-center">
+                  <div className="w-full h-full rounded-full bg-orange-500 flex items-center justify-center">
                     <CheckCircle className="w-3 h-3 text-white" />
                   </div>
                 )}

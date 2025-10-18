@@ -30,7 +30,7 @@ export default function Leadership() {
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                   {/* Avatar */}
                   <div className="flex-shrink-0">
-                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-island-blue-400 to-cricket-green-400 flex items-center justify-center text-4xl md:text-5xl shadow-lg">
+                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-island-blue-400 to-cricket-blue-400 flex items-center justify-center text-4xl md:text-5xl shadow-lg">
                       {member.emoji}
                     </div>
                   </div>
@@ -64,7 +64,7 @@ export default function Leadership() {
 
       {/* Team Values */}
       <div className="mt-12">
-        <Card className="p-8 bg-gradient-to-br from-island-blue-500 to-cricket-green-500 text-white text-center">
+        <Card className="p-8 bg-gradient-to-br from-island-blue-500 to-cricket-orange-500 text-white text-center">
           <h2 className="text-3xl font-heading font-bold mb-4">
             Leading with Vision & Passion
           </h2>

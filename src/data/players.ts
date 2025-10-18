@@ -2,6 +2,26 @@ import type { Player } from '../types';
 
 export const initialPlayers: Omit<Player, 'id'>[] = [
   {
+    name: 'Dr. Vishnu Reddy',
+    role: 'Mentor',
+    battingHand: 'Right',
+    position: 'Principal & Chief Mentor',
+    bio: 'Principal and Chief Mentor of Islanders Cricket Club. Guiding the team with vision, expertise, and dedication to excellence.',
+    stats: {
+      matchesPlayed: 0,
+      runs: 0,
+      wickets: 0,
+      catches: 0,
+      battingAverage: 0,
+      strikeRate: 0,
+    },
+    equipment: [],
+    availability: true,
+    attendanceRate: 100,
+    joinedDate: new Date('2024-01-01'),
+    isActive: true,
+  },
+  {
     name: 'Akhil Reddy Danda',
     role: 'Allrounder',
     battingHand: 'Right',

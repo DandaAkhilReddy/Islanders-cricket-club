@@ -225,7 +225,7 @@ export default function PlayerForm() {
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Player Photo</h2>
             <div className="flex items-center gap-6">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-island-blue-400 to-cricket-green-400 flex items-center justify-center overflow-hidden">
+              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-island-blue-400 to-cricket-blue-400 flex items-center justify-center overflow-hidden">
                 {photoPreview || existingPhoto ? (
                   <img
                     src={photoPreview || existingPhoto}
