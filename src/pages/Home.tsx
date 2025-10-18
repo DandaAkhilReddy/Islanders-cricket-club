@@ -10,11 +10,8 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-bold mb-4">
             Islanders Cricket Club
           </h1>
-          <p className="text-xl md:text-2xl mb-2 text-orange-100">
+          <p className="text-xl md:text-2xl mb-8 text-orange-100">
             Corpus Christi, Texas
-          </p>
-          <p className="text-lg text-blue-200 mb-8">
-            <a href="mailto:" className="underline hover:text-white"></a>
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
             <Link 

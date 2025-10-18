@@ -62,14 +62,6 @@ export default function Login() {
             Sign in to manage your profile and equipment
           </p>
         </div>
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            <a href="mailto:" className="text-orange-700 hover:text-orange-800 underline">
-              
-            </a>
-          </p>
-        </div>
       </div>
     </div>
   );

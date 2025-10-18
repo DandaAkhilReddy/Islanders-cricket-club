@@ -15,10 +15,7 @@ export default function Layout({ children }: LayoutProps) {
       <footer className="bg-blue-900 text-white py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-xl font-bold mb-2">Islanders Cricket Club</p>
-          <p className="text-blue-200 mb-4">Corpus Christi, Texas</p>
-          <p className="text-sm text-blue-300">
-            <a href="mailto:" className="underline hover:text-white"></a>
-          </p>
+          <p className="text-blue-200">Corpus Christi, Texas</p>
         </div>
       </footer>
     </div>
