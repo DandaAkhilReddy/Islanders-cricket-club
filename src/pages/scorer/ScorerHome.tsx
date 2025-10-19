@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play, Calendar, MapPin, Clock, TrendingUp } from 'lucide-react';
-// import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
-// import { db } from '../../lib/firebase';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import type { Match } from '../../types';
 import Card from '../../components/Card';
@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 import Badge from '../../components/Badge';
 
 export default function ScorerHome() {
-  const { currentUser, isScorer } = useAuth();
+  const { currentUser, isScorer, isAdmin } = useAuth();
   const [matches, setMatches] = useState<(Match & { id: string })[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,6 +39,8 @@ export default function ScorerHome() {
       setMatches(matchesData);
     } catch (error) {
       console.error('Error fetching matches:', error);
+      // For now, show empty state if there's an error
+      setMatches([]);
     } finally {
       setLoading(false);
     }
@@ -55,8 +57,9 @@ export default function ScorerHome() {
     });
   }
 
-  if (!isScorer) {
-    return <Navigate to="/login" replace />;
+  // Scorer or Admin can access
+  if (!isScorer && !isAdmin) {
+    return <Navigate to="/" replace />;
   }
 
   if (loading) {
