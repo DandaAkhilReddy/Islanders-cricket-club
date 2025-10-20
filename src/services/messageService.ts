@@ -13,8 +13,6 @@ import {
   serverTimestamp,
   Timestamp,
   arrayUnion,
-  increment,
-  DocumentData,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import type { Conversation, Message, MessageInput, ConversationInput } from '../types/message';
