@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Circle, Clock } from 'lucide-react';
+import { CheckCircle, Clock } from 'lucide-react';
 
 export interface TimelineItem {
   id: string;

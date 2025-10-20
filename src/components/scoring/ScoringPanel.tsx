@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { LiveMatch, Ball, ExtrasType, WicketType } from '../../types/scoring';
-import { Undo, RotateCcw, Users, TrendingUp, AlertCircle } from 'lucide-react';
+import { Undo, RotateCcw, Users, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ScoringPanelProps {

@@ -10,6 +10,7 @@ import {
   MessageSquare,
   LogOut,
   Home,
+  ClipboardList,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -33,6 +34,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: 'Equipment', path: '/admin/equipment', icon: Package },
     { name: 'Budget', path: '/admin/budget', icon: DollarSign },
     { name: 'Communications', path: '/admin/communications', icon: MessageSquare },
+    { name: 'Requests', path: '/admin/requests', icon: ClipboardList },
   ];
 
   const isActive = (path: string) => location.pathname === path;

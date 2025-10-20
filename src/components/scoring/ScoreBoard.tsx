@@ -1,6 +1,7 @@
 import type { LiveMatch } from '../../types/scoring';
 import { TrendingUp, Activity } from 'lucide-react';
 import Badge from '../Badge';
+import { formatFixed } from '../../utils/number';
 
 interface ScoreBoardProps {
   liveMatch: LiveMatch;
@@ -47,7 +48,7 @@ export default function ScoreBoard({ liveMatch }: ScoreBoardProps) {
         <div className="flex items-center gap-4 text-sm bg-white/10 backdrop-blur-sm rounded-lg p-3">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
-            <span>CRR: {innings.runRate.toFixed(2)}</span>
+            <span>CRR: {formatFixed(innings.runRate, 2)}</span>
           </div>
           {innings.target && (
             <>
@@ -59,7 +60,7 @@ export default function ScoreBoard({ liveMatch }: ScoreBoardProps) {
                 <>
                   <div className="w-px h-4 bg-white/30"></div>
                   <div>
-                    RRR: {innings.requiredRunRate.toFixed(2)}
+                    RRR: {formatFixed(innings.requiredRunRate, 2)}
                   </div>
                 </>
               )}
@@ -87,7 +88,7 @@ export default function ScoreBoard({ liveMatch }: ScoreBoardProps) {
                   {innings.currentBatsmen.striker.runs}
                 </div>
                 <div className="text-xs text-white/70">
-                  ({innings.currentBatsmen.striker.balls}) • SR: {innings.currentBatsmen.striker.strikeRate.toFixed(1)}
+                  ({innings.currentBatsmen.striker.balls}) • SR: {formatFixed(innings.currentBatsmen.striker.strikeRate, 1)}
                 </div>
               </div>
             </div>
@@ -101,7 +102,7 @@ export default function ScoreBoard({ liveMatch }: ScoreBoardProps) {
                 {innings.currentBatsmen.nonStriker.runs}
               </div>
               <div className="text-xs text-white/70">
-                ({innings.currentBatsmen.nonStriker.balls}) • SR: {innings.currentBatsmen.nonStriker.strikeRate.toFixed(1)}
+                ({innings.currentBatsmen.nonStriker.balls}) • SR: {formatFixed(innings.currentBatsmen.nonStriker.strikeRate, 1)}
               </div>
             </div>
           </div>
@@ -121,7 +122,7 @@ export default function ScoreBoard({ liveMatch }: ScoreBoardProps) {
                 {innings.currentBowler.wickets}-{innings.currentBowler.runs}
               </div>
               <div className="text-xs text-white/70">
-                ({innings.currentBowler.overs} ov) • Econ: {innings.currentBowler.economy.toFixed(1)}
+                ({innings.currentBowler.overs} ov) • Econ: {formatFixed(innings.currentBowler.economy, 1)}
               </div>
             </div>
           </div>

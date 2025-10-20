@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MessageSquare, Plus, Pin, Users, Bell, MessageCircle, Send } from 'lucide-react';
-// import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
-// import { db } from '../lib/firebase';
+import { MessageSquare, Plus, Pin, Users, Bell, MessageCircle } from 'lucide-react';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 import type { Announcement } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';

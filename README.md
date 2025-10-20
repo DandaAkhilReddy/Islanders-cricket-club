@@ -47,8 +47,8 @@ A comprehensive cricket team management platform for the **Islanders Cricket Tea
 ### Players (15 Total)
 
 - Akhil Reddy Danda (Allrounder, Right) - Captain
-- Faizan Mohammad (Allrounder, Right) - Vice Captain
 - Rajasekhar Reddy (Allrounder, Right) - Director & Board Member
+- Faizan Mohammad (Allrounder, Right) - Vice Captain
 - Nitish (Allrounder, Right) - Associate VC
 - Dinesh Reddy (Allrounder, Right) - Quality Director
 - Charan (Allrounder, Left)

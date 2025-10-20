@@ -4,23 +4,22 @@ import { motion } from 'framer-motion';
 import {
   Calendar,
   MapPin,
-  Clock,
   Trophy,
-  TrendingUp,
   Play,
   Plus,
   Target,
   Activity,
 } from 'lucide-react';
-// import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
-// import { db } from '../lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { formatPercent } from '../utils/number';
 import type { Match } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import StatCard from '../components/StatCard';
 import EmptyState from '../components/EmptyState';
-import Timeline, { type TimelineItem } from '../components/Timeline';
+import Timeline from '../components/Timeline';
 
 export default function Matches() {
   const [matches, setMatches] = useState<(Match & { id: string })[]>([]);
@@ -50,7 +49,8 @@ export default function Matches() {
   const completedMatches = matches.filter(m => m.status === 'completed');
   const wins = completedMatches.filter(m => m.result === 'won').length;
   const losses = completedMatches.filter(m => m.result === 'lost').length;
-  const winRate = completedMatches.length > 0 ? (wins / completedMatches.length) * 100 : 0;
+  const winRateRaw = completedMatches.length > 0 ? (wins / completedMatches.length) * 100 : 0;
+  const winRate = Number.isFinite(winRateRaw) ? winRateRaw : 0;
 
   function formatDate(date: Date | any) {
     if (date?.toDate) date = date.toDate();
@@ -97,7 +97,7 @@ export default function Matches() {
         <StatCard
           title="Wins"
           value={wins}
-          subtitle={`${winRate.toFixed(1)}% win rate`}
+          subtitle={`${formatPercent(winRate, 1)} win rate`}
           icon={Trophy}
           color="soft-orange"
         />

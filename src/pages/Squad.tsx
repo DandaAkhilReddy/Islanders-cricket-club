@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Shield, CheckCircle, XCircle } from 'lucide-react';
+import { Users, Shield, XCircle } from 'lucide-react';
 import { initialPlayers } from '../data/players';
 
 export default function Squad() {

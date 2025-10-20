@@ -24,6 +24,7 @@ import AdminPractice from './pages/admin/AdminPractice';
 import AdminEquipment from './pages/admin/AdminEquipment';
 import AdminBudget from './pages/admin/AdminBudget';
 import AdminCommunications from './pages/admin/AdminCommunications';
+import AdminRequests from './pages/admin/Requests';
 import ScorerHome from './pages/scorer/ScorerHome';
 import LiveScoring from './pages/scorer/LiveScoring';
 import LiveMatch from './pages/LiveMatch';
@@ -59,6 +60,7 @@ function AppContent() {
         <Route path="/admin/equipment" element={<AdminEquipment />} />
         <Route path="/admin/budget" element={<AdminBudget />} />
         <Route path="/admin/communications" element={<AdminCommunications />} />
+        <Route path="/admin/requests" element={<AdminRequests />} />
 
         {/* Scorer Routes */}
         <Route path="/scorer" element={<ScorerHome />} />

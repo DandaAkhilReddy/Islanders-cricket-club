@@ -7,7 +7,8 @@ import {
   signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
-import { createOrUpdateUser, UserData } from '../services/userService';
+import { createOrUpdateUser } from '../services/userService';
+import type { UserData } from '../services/userService';
 
 interface UserDataWithRoles extends UserData {
   isAdmin: boolean;

@@ -22,11 +22,11 @@ export const initialPlayers: Omit<Player, 'id'>[] = [
     isActive: true,
   },
   {
-    name: 'Faizan Mohammad',
+    name: 'Rajasekhar Reddy',
     role: 'Allrounder',
     battingHand: 'Right',
-    position: 'Vice Captain',
-    bio: 'Vice Captain. Key player and leadership support.',
+    position: 'Director',
+    bio: 'Director and Board Member providing strategic leadership and guidance to Islanders Cricket Club.',
     stats: {
       matchesPlayed: 0,
       runs: 0,
@@ -42,11 +42,11 @@ export const initialPlayers: Omit<Player, 'id'>[] = [
     isActive: true,
   },
   {
-    name: 'Rajasekhar Reddy',
+    name: 'Faizan Mohammad',
     role: 'Allrounder',
     battingHand: 'Right',
-    position: 'Director',
-    bio: 'Director and Board Member providing strategic leadership and guidance to Islanders Cricket Club.',
+    position: 'Vice Captain',
+    bio: 'Vice Captain. Key player and leadership support.',
     stats: {
       matchesPlayed: 0,
       runs: 0,

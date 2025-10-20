@@ -14,7 +14,7 @@ if (isAzureConfigured) {
       `https://${accountName}.blob.core.windows.net?${sasToken}`
     );
     containerClient = blobServiceClient.getContainerClient('islandersdata');
-  } catch (error) {
+  } catch {
     console.warn('Azure Blob Storage initialization failed, using fallback data');
   }
 }

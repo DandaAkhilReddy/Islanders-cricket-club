@@ -8,12 +8,15 @@ import {
   LayoutDashboard,
   Clock,
   Trophy,
+  ClipboardList,
 } from 'lucide-react';
 import AdminLayout from '../../components/AdminLayout';
 import StatCard from '../../components/StatCard';
 import Badge from '../../components/Badge';
-// import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
-// import { db } from '../../lib/firebase';
+import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
+import { fetchPendingPlayerUpdateRequests } from '../../services/requestService';
+import { formatFixed } from '../../utils/number';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -23,6 +26,7 @@ export default function AdminDashboard() {
     recentPractices: 0,
     totalBudget: 50000,
     budgetSpent: 0,
+    pendingRequests: 0,
   });
   const [loading, setLoading] = useState(true);
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
@@ -67,6 +71,8 @@ export default function AdminDashboard() {
         0
       );
 
+      const pendingRequests = await fetchPendingPlayerUpdateRequests();
+
       setStats({
         totalPlayers,
         activePlayers,
@@ -74,6 +80,7 @@ export default function AdminDashboard() {
         recentPractices: practicesSnapshot.size,
         totalBudget: 50000,
         budgetSpent,
+        pendingRequests: pendingRequests.length,
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -164,7 +171,9 @@ export default function AdminDashboard() {
   }
 
   const budgetRemaining = stats.totalBudget - stats.budgetSpent;
-  const budgetPercentage = ((stats.budgetSpent / stats.totalBudget) * 100).toFixed(1);
+  const budgetPercentageRaw = stats.totalBudget > 0 ? (stats.budgetSpent / stats.totalBudget) * 100 : 0;
+  const budgetPercentage = Number.isFinite(budgetPercentageRaw) ? budgetPercentageRaw : 0;
+  const budgetPercentageLabel = formatFixed(budgetPercentage, 1);
 
   return (
     <AdminLayout>
@@ -181,7 +190,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <StatCard
             title="Total Players"
             value={stats.totalPlayers}
@@ -206,9 +215,16 @@ export default function AdminDashboard() {
           <StatCard
             title="Budget Remaining"
             value={`$${budgetRemaining.toLocaleString()}`}
-            subtitle={`${budgetPercentage}% spent`}
+            subtitle={`${budgetPercentageLabel}% spent`}
             icon={DollarSign}
             color="soft-orange"
+          />
+          <StatCard
+            title="Player Requests"
+            value={stats.pendingRequests}
+            subtitle="Awaiting review"
+            icon={ClipboardList}
+            color="soft-blue"
           />
         </div>
 
@@ -304,10 +320,10 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-sm font-medium text-gray-700">Budget Usage</span>
-                  <span className="text-sm font-bold text-gray-900">{budgetPercentage}%</span>
+                  <span className="text-sm font-bold text-gray-900">{budgetPercentageLabel}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-soft-orange-500 h-2 rounded-full" style={{ width: `${budgetPercentage}%` }}></div>
+                  <div className="bg-soft-orange-500 h-2 rounded-full" style={{ width: `${Math.min(budgetPercentage, 100)}%` }}></div>
                 </div>
               </div>
             </div>

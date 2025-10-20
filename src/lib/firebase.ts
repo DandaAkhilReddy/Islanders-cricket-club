@@ -3,11 +3,23 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
+const sanitize = (value: string | undefined) =>
+  value
+    ?.trim()
+    .replace(/^["']|["']$/g, '')
+    .replace(/\\+/g, '')
+    .replace(/\s+/g, '')
+    .replace(/=+$/g, '');
+
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: sanitize(import.meta.env.VITE_FIREBASE_API_KEY),
+  authDomain: sanitize(import.meta.env.VITE_FIREBASE_AUTH_DOMAIN),
+  projectId: sanitize(import.meta.env.VITE_FIREBASE_PROJECT_ID),
+  appId: sanitize(import.meta.env.VITE_FIREBASE_APP_ID),
+  storageBucket: sanitize(import.meta.env.VITE_FIREBASE_STORAGE_BUCKET),
+  messagingSenderId: sanitize(import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID),
+  databaseURL: sanitize(import.meta.env.VITE_FIREBASE_DATABASE_URL),
+  measurementId: sanitize(import.meta.env.VITE_FIREBASE_MEASUREMENT_ID),
 };
 
 export const app = initializeApp(firebaseConfig);

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-// import { doc, onSnapshot } from 'firebase/firestore';
-// import { db } from '../lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 import type { LiveMatch as LiveMatchType } from '../types/scoring';
 import ScoreBoard from '../components/scoring/ScoreBoard';
-import { Activity, Clock, TrendingUp, Target } from 'lucide-react';
+import { Activity, Clock } from 'lucide-react';
+import { formatFixed } from '../utils/number';
 import Badge from '../components/Badge';
 import Card from '../components/Card';
 
@@ -115,7 +116,7 @@ export default function LiveMatch() {
                       <td className="text-center text-gray-400">{batsman.balls}</td>
                       <td className="text-center text-gray-400">{batsman.fours}</td>
                       <td className="text-center text-gray-400">{batsman.sixes}</td>
-                      <td className="text-center text-gray-400">{batsman.strikeRate.toFixed(1)}</td>
+                      <td className="text-center text-gray-400">{formatFixed(batsman.strikeRate, 1)}</td>
                       <td className="text-gray-400">
                         {batsman.isOut ? (
                           <span className="text-red-400">
@@ -163,7 +164,7 @@ export default function LiveMatch() {
                       <td className="text-center text-gray-400">{bowler.maidens}</td>
                       <td className="text-center">{bowler.runs}</td>
                       <td className="text-center font-semibold">{bowler.wickets}</td>
-                      <td className="text-center text-gray-400">{bowler.economy.toFixed(2)}</td>
+                      <td className="text-center text-gray-400">{formatFixed(bowler.economy, 2)}</td>
                     </tr>
                   ))}
                 </tbody>

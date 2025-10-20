@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Activity, Users, Clock, Plus, TrendingUp, Calendar } from 'lucide-react';
-// import { collection, getDocs } from 'firebase/firestore';
-// import { db } from '../lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { formatPercent } from '../utils/number';
 import type { Practice as PracticeType } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';
@@ -11,7 +12,7 @@ import Badge from '../components/Badge';
 import StatCard from '../components/StatCard';
 import EmptyState from '../components/EmptyState';
 import ProgressRing from '../components/ProgressRing';
-import Timeline from '../components/Timeline';
+// Timeline not used on this page
 
 export default function Practice() {
   const [practices, setPractices] = useState<(PracticeType & { id: string })[]>([]);
@@ -39,8 +40,11 @@ export default function Practice() {
 
   const totalSessions = practices.length;
   const totalAttendance = practices.reduce((sum, p) => sum + p.attendance.length, 0);
-  const avgAttendance = totalSessions > 0 ? Math.round((totalAttendance / totalSessions)) : 0;
-  const attendanceRate = totalSessions > 0 ? (totalAttendance / (totalSessions * 14)) * 100 : 0;
+  const avgAttendance = totalSessions > 0 ? Math.round(totalAttendance / totalSessions) : 0;
+  const attendanceRateRaw = totalSessions > 0 ? (totalAttendance / (totalSessions * 14)) * 100 : 0;
+  const attendanceRate = Number.isFinite(attendanceRateRaw)
+    ? Math.min(Math.max(attendanceRateRaw, 0), 100)
+    : 0;
 
   function formatDate(date: Date | any) {
     if (date?.toDate) date = date.toDate();
@@ -101,7 +105,7 @@ export default function Practice() {
         />
         <StatCard
           title="Attendance Rate"
-          value={`${attendanceRate.toFixed(0)}%`}
+          value={formatPercent(attendanceRate, 0)}
           subtitle="Overall participation"
           icon={TrendingUp}
           color="soft-orange"
@@ -181,13 +185,19 @@ export default function Practice() {
           />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {practices.slice(0, 6).map((practice, index) => (
-              <motion.div
-                key={practice.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
+            {practices.slice(0, 6).map((practice, index) => {
+              const percentRaw = (practice.attendance.length / 14) * 100;
+              const attendancePercent = Number.isFinite(percentRaw)
+                ? Math.min(Math.max(percentRaw, 0), 100)
+                : 0;
+
+              return (
+                <motion.div
+                  key={practice.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
                 <Card className="p-6 hover:shadow-xl transition-shadow">
                   <div className="flex justify-between items-start mb-4">
                     <Badge variant="default" className={practiceTypeColors[practice.type]}>
@@ -237,13 +247,14 @@ export default function Practice() {
                         {practice.location}
                       </span>
                       <div className="text-sm font-semibold text-cricket-green-600 dark:text-cricket-green-400">
-                        {Math.round((practice.attendance.length / 14) * 100)}% attendance
+                        {formatPercent(attendancePercent, 0)} attendance
                       </div>
                     </div>
                   </div>
                 </Card>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </div>

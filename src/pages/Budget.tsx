@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { DollarSign, Plus, TrendingDown, TrendingUp, Wallet, AlertCircle } from 'lucide-react';
-// import { collection, getDocs } from 'firebase/firestore';
-// import { db } from '../lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { formatFixed } from '../utils/number';
 import type { Expense } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';
@@ -37,9 +38,10 @@ export default function Budget() {
     }
   }
 
-  const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const totalSpent = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
   const remaining = totalBudget - totalSpent;
-  const spentPercentage = (totalSpent / totalBudget) * 100;
+  const spentPercentageRaw = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
+  const spentPercentage = Number.isFinite(spentPercentageRaw) ? spentPercentageRaw : 0;
 
   const categoryTotals = expenses.reduce((acc, e) => {
     acc[e.category] = (acc[e.category] || 0) + e.amount;
@@ -88,8 +90,8 @@ export default function Budget() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Total Budget" value={`$${totalBudget.toLocaleString()}`} subtitle="Season allocation" icon={Wallet} color="soft-orange" />
-        <StatCard title="Total Spent" value={`$${totalSpent.toLocaleString()}`} subtitle={`${spentPercentage.toFixed(1)}% used`} icon={TrendingDown} color="soft-blue" />
-        <StatCard title="Remaining" value={`$${remaining.toLocaleString()}`} subtitle={`${(100 - spentPercentage).toFixed(1)}% left`} icon={TrendingUp} color="soft-orange" />
+        <StatCard title="Total Spent" value={`$${totalSpent.toLocaleString()}`} subtitle={`${formatFixed(spentPercentage, 1)}% used`} icon={TrendingDown} color="soft-blue" />
+        <StatCard title="Remaining" value={`$${remaining.toLocaleString()}`} subtitle={`${formatFixed(100 - spentPercentage, 1)}% left`} icon={TrendingUp} color="soft-orange" />
         <StatCard title="Transactions" value={expenses.length} subtitle="Total expenses" icon={AlertCircle} color="soft-blue" />
       </div>
 
@@ -110,7 +112,8 @@ export default function Budget() {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Category Breakdown</h3>
           <div className="space-y-3">
             {Object.entries(categoryTotals).map(([category, amount]) => {
-              const percentage = (amount / totalSpent) * 100;
+              const percentageRaw = totalSpent > 0 ? (amount / totalSpent) * 100 : 0;
+              const percentage = Number.isFinite(percentageRaw) ? percentageRaw : 0;
               return (
                 <div key={category}>
                   <div className="flex justify-between mb-1">
@@ -118,7 +121,7 @@ export default function Budget() {
                     <span className="text-sm font-semibold text-gray-900 dark:text-white">${amount.toLocaleString()}</span>
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all" style={{ width: `${percentage}%` }}></div>
+                    <div className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all" style={{ width: `${Math.min(percentage, 100)}%` }}></div>
                   </div>
                 </div>
               );
