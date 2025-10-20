@@ -30,6 +30,7 @@ import LiveScoring from './pages/scorer/LiveScoring';
 import LiveMatch from './pages/LiveMatch';
 import Messenger from './pages/Messenger';
 import PlayerDashboard from './pages/player/Dashboard';
+import ClaimProfile from './pages/ClaimProfile';
 
 function AppContent() {
   const { loading } = useAuth();
@@ -53,6 +54,7 @@ function AppContent() {
         <Route path="/profile" element={<ProtectedRoute><PlayerProfile /></ProtectedRoute>} />
 
         {/* Player Routes */}
+        <Route path="/claim-profile" element={<ProtectedRoute><ClaimProfile /></ProtectedRoute>} />
         <Route path="/player/dashboard" element={<ProtectedRoute><PlayerDashboard /></ProtectedRoute>} />
         <Route path="/messenger" element={<ProtectedRoute><Messenger /></ProtectedRoute>} />
 

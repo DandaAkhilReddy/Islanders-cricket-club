@@ -1,26 +1,53 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { LogIn } from 'lucide-react';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signInWithGoogle } = useAuth();
+  const { currentUser, isAdmin, isScorer, hasClaimedProfile, signInWithGoogle, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  // Smart redirect after authentication
+  useEffect(() => {
+    if (!authLoading && currentUser) {
+      // Determine where to redirect based on role and profile claim status
+      if (isAdmin) {
+        navigate('/admin', { replace: true });
+      } else if (isScorer) {
+        navigate('/scorer', { replace: true });
+      } else if (hasClaimedProfile) {
+        navigate('/player/dashboard', { replace: true });
+      } else {
+        navigate('/claim-profile', { replace: true });
+      }
+    }
+  }, [currentUser, isAdmin, isScorer, hasClaimedProfile, authLoading, navigate]);
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError('');
     try {
       await signInWithGoogle();
-      navigate('/profile');
+      // Redirect will be handled by useEffect above
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with Google');
-    } finally {
       setLoading(false);
     }
   };
+
+  // If already logged in, show loading while redirecting
+  if (!authLoading && currentUser) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-green-50 to-amber-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Redirecting...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-amber-50 flex items-center justify-center py-12 px-4">
@@ -59,14 +86,14 @@ export default function Login() {
           </button>
 
           <p className="text-center text-sm text-gray-500 mt-6">
-            Sign in to manage your profile and equipment
+            Sign in to access your player dashboard and team features
           </p>
         </div>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            <a href="mailto:" className="text-green-700 hover:text-green-800 underline">
-              
+            <a href="mailto:canderson@hssmedicine.com" className="text-green-700 hover:text-green-800 underline">
+              Need help? Contact admin
             </a>
           </p>
         </div>

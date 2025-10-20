@@ -10,7 +10,10 @@
       "Bash(git add .)",
       "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add admin requests, utilities, and Vercel deployment configuration\n\n- Add Requests page for admin to manage team requests\n- Add requestService for handling request operations\n- Add number utility functions\n- Configure Vercel deployment with vercel.json\n- Update various components and pages with improvements\n- Update README with latest project information\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git push origin master)",
-      "Bash(vercel env pull .env.production)"
+      "Bash(vercel env pull .env.production)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add real-time team messaging and enhanced player/admin workflow\n\n**Major Features:**\n- Real-time team messenger with DMs, group chats, and team-wide channel\n- Player dashboard with stats and quick actions\n- Complete request infrastructure (match, practice, equipment, expense)\n- Enhanced navbar with messenger, dashboard, and profile links\n\n**Backend Services:**\n- messageService: Real-time messaging with Firestore\n- matchRequestService: Match proposal submissions\n- practiceRequestService: Practice session requests\n- equipmentRequestService: Equipment requisitions  \n- expenseRequestService: Expense reimbursement tracking\n\n**UI Components:**\n- ConversationList: Real-time conversation sidebar\n- ChatWindow: Full-featured messaging interface\n- MessageBubble: Messages with reactions and read receipts\n- Messenger: Main messaging page\n- PlayerDashboard: Personal stats and quick actions\n\n**Type Definitions:**\n- message.ts: Conversation and message types\n- requests.ts: All request types (Match, Practice, Equipment, Expense)\n\n**Documentation:**\n- ENHANCED_FEATURES_IMPLEMENTATION.md: Complete implementation guide\n\n**Routing:**\n- /messenger: Team messaging\n- /player/dashboard: Player dashboard\n- Enhanced navbar with auth-based navigation\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git add src/services/messageService.ts)",
+      "Bash(git commit -m \"fix: Remove unused imports from messageService\")"
     ],
     "deny": [],
     "ask": []

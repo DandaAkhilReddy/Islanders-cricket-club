@@ -1,7 +1,26 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Users, Calendar, Activity, Shield } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Home() {
+  const { currentUser, isAdmin, isScorer, hasClaimedProfile, loading } = useAuth();
+  const navigate = useNavigate();
+
+  // Auto-redirect logged-in users to their dashboard
+  useEffect(() => {
+    if (!loading && currentUser) {
+      if (isAdmin) {
+        navigate('/admin', { replace: true });
+      } else if (isScorer) {
+        navigate('/scorer', { replace: true });
+      } else if (hasClaimedProfile) {
+        navigate('/player/dashboard', { replace: true });
+      } else {
+        navigate('/claim-profile', { replace: true });
+      }
+    }
+  }, [currentUser, isAdmin, isScorer, hasClaimedProfile, loading, navigate]);
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-amber-50">
       {/* Hero Section */}
