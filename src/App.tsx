@@ -28,6 +28,8 @@ import AdminRequests from './pages/admin/Requests';
 import ScorerHome from './pages/scorer/ScorerHome';
 import LiveScoring from './pages/scorer/LiveScoring';
 import LiveMatch from './pages/LiveMatch';
+import Messenger from './pages/Messenger';
+import PlayerDashboard from './pages/player/Dashboard';
 
 function AppContent() {
   const { loading } = useAuth();
@@ -49,6 +51,10 @@ function AppContent() {
         <Route path="/communications" element={<Communications />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<ProtectedRoute><PlayerProfile /></ProtectedRoute>} />
+
+        {/* Player Routes */}
+        <Route path="/player/dashboard" element={<ProtectedRoute><PlayerDashboard /></ProtectedRoute>} />
+        <Route path="/messenger" element={<ProtectedRoute><Messenger /></ProtectedRoute>} />
 
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminDashboard />} />

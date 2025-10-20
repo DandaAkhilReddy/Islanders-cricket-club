@@ -7,7 +7,10 @@
       "Bash(vercel --prod)",
       "Bash(npm run dev)",
       "Bash(netstat -ano)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add admin requests, utilities, and Vercel deployment configuration\n\n- Add Requests page for admin to manage team requests\n- Add requestService for handling request operations\n- Add number utility functions\n- Configure Vercel deployment with vercel.json\n- Update various components and pages with improvements\n- Update README with latest project information\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push origin master)",
+      "Bash(vercel env pull .env.production)"
     ],
     "deny": [],
     "ask": []
