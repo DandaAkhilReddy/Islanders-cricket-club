@@ -11,19 +11,34 @@ export default function Login() {
 
   // Smart redirect after authentication
   useEffect(() => {
+    // Only redirect when:
+    // 1. Auth is not loading
+    // 2. User is authenticated
+    // 3. We have userData (which includes roles)
     if (!authLoading && currentUser) {
+      console.log('[Login] Redirect check:', {
+        isAdmin,
+        isScorer,
+        hasClaimedProfile,
+        currentUser: currentUser?.uid
+      });
+
       // Determine where to redirect based on role and profile claim status
       if (isAdmin) {
+        console.log('[Login] Redirecting to admin dashboard');
         navigate('/admin', { replace: true });
       } else if (isScorer) {
+        console.log('[Login] Redirecting to scorer home');
         navigate('/scorer', { replace: true });
       } else if (hasClaimedProfile) {
+        console.log('[Login] Redirecting to player dashboard');
         navigate('/player/dashboard', { replace: true });
       } else {
+        console.log('[Login] Redirecting to claim profile');
         navigate('/claim-profile', { replace: true });
       }
     }
-  }, [currentUser, isAdmin, isScorer, hasClaimedProfile, authLoading, navigate]);
+  }, [authLoading, currentUser, isAdmin, isScorer, hasClaimedProfile, navigate]);
 
   const handleGoogleSignIn = async () => {
     setLoading(true);

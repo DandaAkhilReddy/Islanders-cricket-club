@@ -56,31 +56,49 @@ export async function submitPlayerUpdateRequest(payload: PlayerUpdateRequestPayl
 }
 
 export async function fetchPlayerUpdateRequests(playerId: string) {
-  const q = query(
-    collection(db, COLLECTION_NAME),
-    where('playerId', '==', playerId),
-    orderBy('createdAt', 'desc')
-  );
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where('playerId', '==', playerId),
+      orderBy('createdAt', 'desc')
+    );
 
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((docSnap) => ({
-    id: docSnap.id,
-    ...(docSnap.data() as Omit<PlayerUpdateRequestDoc, 'id'>),
-  }));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((docSnap) => ({
+      id: docSnap.id,
+      ...(docSnap.data() as Omit<PlayerUpdateRequestDoc, 'id'>),
+    }));
+  } catch (error: any) {
+    // If index doesn't exist yet, return empty array instead of crashing
+    if (error.code === 'failed-precondition' || error.message?.includes('index')) {
+      console.warn('Firestore index not ready yet. Please create the index in Firebase Console.');
+      return [];
+    }
+    throw error;
+  }
 }
 
 export async function fetchPendingPlayerUpdateRequests() {
-  const q = query(
-    collection(db, COLLECTION_NAME),
-    where('status', '==', 'pending'),
-    orderBy('createdAt', 'desc')
-  );
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where('status', '==', 'pending'),
+      orderBy('createdAt', 'desc')
+    );
 
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((docSnap) => ({
-    id: docSnap.id,
-    ...(docSnap.data() as Omit<PlayerUpdateRequestDoc, 'id'>),
-  }));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((docSnap) => ({
+      id: docSnap.id,
+      ...(docSnap.data() as Omit<PlayerUpdateRequestDoc, 'id'>),
+    }));
+  } catch (error: any) {
+    // If index doesn't exist yet, return empty array instead of crashing
+    if (error.code === 'failed-precondition' || error.message?.includes('index')) {
+      console.warn('Firestore index not ready yet. Please create the index in Firebase Console.');
+      return [];
+    }
+    throw error;
+  }
 }
 
 export async function fetchAllPlayerUpdateRequests() {

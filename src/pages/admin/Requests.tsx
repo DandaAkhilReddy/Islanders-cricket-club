@@ -256,7 +256,7 @@ export default function AdminRequests() {
 
         <section className="space-y-4">
           <h2 className="text-lg font-semibold text-gray-900">Recently processed</h2>
-          {requestsLoading ? (
+          {loading ? (
             <div className="flex items-center gap-2 text-gray-600">
               <Loader2 className="w-4 h-4 animate-spin" /> Loading history...
             </div>

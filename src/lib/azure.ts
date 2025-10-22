@@ -77,14 +77,29 @@ async function blobToString(blob: Blob | undefined): Promise<string> {
 
 export async function uploadPhoto(playerId: string, file: File): Promise<string> {
   if (!containerClient || !accountName) {
-    throw new Error('Azure Blob Storage not configured');
+    throw new Error('Azure Blob Storage not configured. Please add Azure credentials to .env file.');
   }
+
+  // Validate file type
+  if (!file.type.startsWith('image/')) {
+    throw new Error('Only image files are allowed');
+  }
+
+  // Validate file size (max 5MB)
+  const maxSize = 5 * 1024 * 1024;
+  if (file.size > maxSize) {
+    throw new Error('Image size must be less than 5MB');
+  }
+
   const fileExtension = file.name.split('.').pop() || 'jpg';
   const blobName = `photos/${playerId}.${fileExtension}`;
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
   await blockBlobClient.uploadData(file, {
-    blobHTTPHeaders: { blobContentType: file.type }
+    blobHTTPHeaders: {
+      blobContentType: file.type,
+      blobCacheControl: 'public, max-age=31536000' // Cache for 1 year
+    }
   });
 
   return `https://${accountName}.blob.core.windows.net/islandersdata/${blobName}`;

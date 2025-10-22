@@ -10,17 +10,28 @@ export default function Home() {
   // Auto-redirect logged-in users to their dashboard
   useEffect(() => {
     if (!loading && currentUser) {
+      console.log('[Home] Redirect check:', {
+        isAdmin,
+        isScorer,
+        hasClaimedProfile,
+        currentUser: currentUser?.uid
+      });
+
       if (isAdmin) {
+        console.log('[Home] Redirecting to admin dashboard');
         navigate('/admin', { replace: true });
       } else if (isScorer) {
+        console.log('[Home] Redirecting to scorer home');
         navigate('/scorer', { replace: true });
       } else if (hasClaimedProfile) {
+        console.log('[Home] Redirecting to player dashboard');
         navigate('/player/dashboard', { replace: true });
       } else {
+        console.log('[Home] Redirecting to claim profile');
         navigate('/claim-profile', { replace: true });
       }
     }
-  }, [currentUser, isAdmin, isScorer, hasClaimedProfile, loading, navigate]);
+  }, [loading, currentUser, isAdmin, isScorer, hasClaimedProfile, navigate]);
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-amber-50">
       {/* Hero Section */}

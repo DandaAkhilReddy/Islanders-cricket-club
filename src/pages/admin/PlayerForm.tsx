@@ -5,9 +5,9 @@ import { Upload, Save, X, User as UserIcon } from 'lucide-react';
 import AdminLayout from '../../components/AdminLayout';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-// import { doc, getDoc, setDoc, addDoc, collection } from 'firebase/firestore';
-// import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-// import { db, storage } from '../../lib/firebase';
+import { doc, getDoc, setDoc, addDoc, collection } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
+import { uploadPhoto } from '../../lib/azure';
 import type { Player, PlayerRole, PlayerPosition, BattingHand } from '../../types';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -129,12 +129,17 @@ export default function PlayerForm() {
 
       let photoURL = existingPhoto;
 
-      // Upload photo if new file selected
+      // Upload photo to Azure if new file selected
       if (photoFile) {
-        const storageRef = ref(storage, `players/${Date.now()}_${photoFile.name}`);
-        await uploadBytes(storageRef, photoFile);
-        photoURL = await getDownloadURL(storageRef);
-        toast.success('Photo uploaded successfully!');
+        try {
+          const playerId = id || `player_${Date.now()}`;
+          photoURL = await uploadPhoto(playerId, photoFile);
+          toast.success('Photo uploaded successfully to Azure!');
+        } catch (uploadError) {
+          console.error('Photo upload error:', uploadError);
+          toast.error('Failed to upload photo. Saving player without photo.');
+          photoURL = existingPhoto || '';
+        }
       }
 
       const playerData: Omit<Player, 'id'> = {
@@ -144,8 +149,8 @@ export default function PlayerForm() {
         position: data.position,
         bio: data.bio,
         contact: {
-          phone: data.contactPhone,
-          email: data.contactEmail,
+          phone: data.contactPhone || null,
+          email: data.contactEmail || null,
         },
         photo: photoURL,
         stats: {
@@ -153,13 +158,23 @@ export default function PlayerForm() {
           runs: Number(data.runs),
           wickets: Number(data.wickets),
           catches: Number(data.catches),
-          stumpings: data.stumpings ? Number(data.stumpings) : undefined,
+          stumpings: data.stumpings ? Number(data.stumpings) : null,
           battingAverage: Number(data.battingAverage),
-          bowlingAverage: data.bowlingAverage ? Number(data.bowlingAverage) : undefined,
+          bowlingAverage: data.bowlingAverage ? Number(data.bowlingAverage) : null,
           strikeRate: Number(data.strikeRate),
-          economy: data.economy ? Number(data.economy) : undefined,
+          economy: data.economy ? Number(data.economy) : null,
         },
-        equipment: [],
+        equipmentReceived: {
+          practiceTShirt: false,
+          matchTShirt: false,
+          bat: false,
+          pads: false,
+          gloves: false,
+          helmet: false,
+          shoes: false,
+          kitBag: false,
+          other: [],
+        },
         availability: data.availability,
         attendanceRate: Number(data.attendanceRate),
         joinedDate: new Date(),

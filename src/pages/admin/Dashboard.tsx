@@ -128,32 +128,33 @@ export default function AdminDashboard() {
 
   const quickActions = [
     {
-      name: 'Add Match',
-      path: '/admin/matches/add',
-      icon: Calendar,
-      color: 'soft-blue',
-      description: 'Schedule a new match'
-    },
-    {
-      name: 'Add Practice',
-      path: '/admin/practice/add',
-      icon: Activity,
+      name: 'Review Requests',
+      path: '/admin/requests',
+      icon: ClipboardList,
       color: 'soft-orange',
-      description: 'Plan practice session'
+      description: 'Approve player updates',
+      badge: stats.pendingRequests > 0 ? stats.pendingRequests : null
     },
     {
-      name: 'Add Player',
-      path: '/admin/players/add',
+      name: 'Manage Players',
+      path: '/admin/players',
       icon: Users,
       color: 'soft-blue',
-      description: 'Register new player'
+      description: 'View team roster'
     },
     {
-      name: 'Add Expense',
-      path: '/admin/budget/add',
-      icon: DollarSign,
+      name: 'View Matches',
+      path: '/admin/matches',
+      icon: Calendar,
       color: 'soft-orange',
-      description: 'Record an expense'
+      description: 'Match schedule'
+    },
+    {
+      name: 'View Budget',
+      path: '/admin/budget',
+      icon: DollarSign,
+      color: 'soft-blue',
+      description: 'Track expenses'
     },
   ];
 
@@ -246,8 +247,13 @@ export default function AdminDashboard() {
                 <Link
                   key={action.name}
                   to={action.path}
-                  className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-soft-blue-300 transition-all group"
+                  className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md hover:border-soft-blue-300 transition-all group relative"
                 >
+                  {action.badge && (
+                    <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                      {action.badge}
+                    </span>
+                  )}
                   <div className={`w-10 h-10 rounded-lg ${colorClasses.bg} mb-3 flex items-center justify-center`}>
                     <Icon className={`w-5 h-5 ${colorClasses.text}`} />
                   </div>

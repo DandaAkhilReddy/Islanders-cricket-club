@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    port: 6000,
+    port: 5173,
   },
   plugins: [
     react(),
@@ -43,6 +43,9 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        // Fix navigation route allowlist to include all app routes
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/api/, /^\/assets/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/firebasestorage\.googleapis\.com\/.*/i,
@@ -52,6 +55,35 @@ export default defineConfig({
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/.*\.blob\.core\.windows\.net\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'azure-images-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/.*\.firebaseio\.com\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'firebase-data-cache',
+              networkTimeoutSeconds: 10,
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 5, // 5 minutes
               },
               cacheableResponse: {
                 statuses: [0, 200],

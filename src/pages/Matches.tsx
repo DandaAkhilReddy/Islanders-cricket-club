@@ -13,6 +13,7 @@ import {
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { formatPercent } from '../utils/number';
+import { useAuth } from '../contexts/AuthContext';
 import type { Match } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';
@@ -22,6 +23,7 @@ import EmptyState from '../components/EmptyState';
 import Timeline from '../components/Timeline';
 
 export default function Matches() {
+  const { isAdmin } = useAuth();
   const [matches, setMatches] = useState<(Match & { id: string })[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -75,14 +77,24 @@ export default function Matches() {
   return (
     <div className="space-y-6">
       {/* Simple Header */}
-      <div className="flex items-center gap-4">
-        <div className="p-3 rounded-lg bg-soft-blue-100">
-          <Calendar className="w-6 h-6 text-soft-blue-600" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-lg bg-soft-blue-100">
+            <Calendar className="w-6 h-6 text-soft-blue-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Matches</h1>
+            <p className="text-sm text-gray-600">Track all team matches and results</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Matches</h1>
-          <p className="text-sm text-gray-600">Track all team matches and results</p>
-        </div>
+        {isAdmin && (
+          <Link to="/admin/matches/add">
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Match
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Stats */}

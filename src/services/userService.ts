@@ -1,13 +1,14 @@
-import { 
-  doc, 
-  getDoc, 
-  setDoc, 
+import {
+  doc,
+  getDoc,
+  setDoc,
   updateDoc,
   serverTimestamp,
   Timestamp
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import type { User as FirebaseUser } from 'firebase/auth';
+import { logger } from './logger';
 
 export interface UserRole {
   isAdmin: boolean;
@@ -41,7 +42,7 @@ export async function getUserData(uid: string): Promise<UserData | null> {
     
     return userSnap.data() as UserData;
   } catch (error) {
-    console.error('Error getting user data:', error);
+    logger.error('Error getting user data', error, 'USER_SERVICE');
     throw error;
   }
 }
@@ -55,14 +56,18 @@ export async function createOrUpdateUser(
   try {
     const userRef = doc(db, 'users', firebaseUser.uid);
     const userSnap = await getDoc(userRef);
-    
-    const isAdmin = ADMIN_EMAILS.includes(firebaseUser.email || '');
+
+    const existingData = userSnap.exists()
+      ? (userSnap.data() as Partial<UserData>)
+      : null;
+    const defaultIsAdmin = ADMIN_EMAILS.includes(firebaseUser.email || '');
+
     const roles: UserRole = {
-      isAdmin,
-      isScorer: isAdmin, // Admins are also scorers
-      isPlayer: true, // All users are players by default
+      isAdmin: existingData?.isAdmin ?? defaultIsAdmin,
+      isScorer: existingData?.isScorer ?? defaultIsAdmin,
+      isPlayer: existingData?.isPlayer ?? !defaultIsAdmin,
     };
-    
+
     const userData: UserData = {
       uid: firebaseUser.uid,
       email: firebaseUser.email || '',
@@ -74,7 +79,7 @@ export async function createOrUpdateUser(
         : Timestamp.now(),
       lastLoginAt: Timestamp.now(),
     };
-    
+
     if (!userSnap.exists()) {
       // Create new user
       await setDoc(userRef, userData);
@@ -90,7 +95,7 @@ export async function createOrUpdateUser(
     
     return userData;
   } catch (error) {
-    console.error('Error creating/updating user:', error);
+    logger.error('Error creating/updating user', error, 'USER_SERVICE');
     throw error;
   }
 }
@@ -106,7 +111,7 @@ export async function updateUserRoles(
     const userRef = doc(db, 'users', uid);
     await updateDoc(userRef, roles);
   } catch (error) {
-    console.error('Error updating user roles:', error);
+    logger.error('Error updating user roles', error, 'USER_SERVICE');
     throw error;
   }
 }

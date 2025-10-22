@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { logFirebaseConfigValidation } from './firebaseConfigValidator';
 
 const sanitize = (value: string | undefined) =>
   value
@@ -21,6 +22,9 @@ const firebaseConfig = {
   databaseURL: sanitize(import.meta.env.VITE_FIREBASE_DATABASE_URL),
   measurementId: sanitize(import.meta.env.VITE_FIREBASE_MEASUREMENT_ID),
 };
+
+// Validate Firebase configuration before initializing
+logFirebaseConfigValidation();
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

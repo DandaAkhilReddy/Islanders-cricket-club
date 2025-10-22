@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import Loader from './components/Loader';
+import ErrorBoundary from './components/ErrorBoundary';
+import OfflineBanner from './components/OfflineBanner';
 import { useAuth } from './contexts/AuthContext';
 
 // Pages
@@ -19,6 +21,8 @@ import PlayerProfile from './pages/PlayerProfile';
 import AdminDashboard from './pages/admin/Dashboard';
 import Players from './pages/admin/Players';
 import PlayerForm from './pages/admin/PlayerForm';
+import MatchForm from './pages/admin/MatchForm';
+import ExpenseForm from './pages/admin/ExpenseForm';
 import AdminMatches from './pages/admin/AdminMatches';
 import AdminPractice from './pages/admin/AdminPractice';
 import AdminEquipment from './pages/admin/AdminEquipment';
@@ -59,16 +63,20 @@ function AppContent() {
         <Route path="/messenger" element={<ProtectedRoute><Messenger /></ProtectedRoute>} />
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/players" element={<Players />} />
-        <Route path="/admin/players/add" element={<PlayerForm />} />
-        <Route path="/admin/players/edit/:id" element={<PlayerForm />} />
-        <Route path="/admin/matches" element={<AdminMatches />} />
-        <Route path="/admin/practice" element={<AdminPractice />} />
-        <Route path="/admin/equipment" element={<AdminEquipment />} />
-        <Route path="/admin/budget" element={<AdminBudget />} />
-        <Route path="/admin/communications" element={<AdminCommunications />} />
-        <Route path="/admin/requests" element={<AdminRequests />} />
+        <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/players" element={<ProtectedRoute requireAdmin><Players /></ProtectedRoute>} />
+        <Route path="/admin/players/add" element={<ProtectedRoute requireAdmin><PlayerForm /></ProtectedRoute>} />
+        <Route path="/admin/players/edit/:id" element={<ProtectedRoute requireAdmin><PlayerForm /></ProtectedRoute>} />
+        <Route path="/admin/matches" element={<ProtectedRoute requireAdmin><AdminMatches /></ProtectedRoute>} />
+        <Route path="/admin/matches/add" element={<ProtectedRoute requireAdmin><MatchForm /></ProtectedRoute>} />
+        <Route path="/admin/matches/edit/:id" element={<ProtectedRoute requireAdmin><MatchForm /></ProtectedRoute>} />
+        <Route path="/admin/practice" element={<ProtectedRoute requireAdmin><AdminPractice /></ProtectedRoute>} />
+        <Route path="/admin/equipment" element={<ProtectedRoute requireAdmin><AdminEquipment /></ProtectedRoute>} />
+        <Route path="/admin/budget" element={<ProtectedRoute requireAdmin><AdminBudget /></ProtectedRoute>} />
+        <Route path="/admin/budget/add" element={<ProtectedRoute requireAdmin><ExpenseForm /></ProtectedRoute>} />
+        <Route path="/admin/budget/edit/:id" element={<ProtectedRoute requireAdmin><ExpenseForm /></ProtectedRoute>} />
+        <Route path="/admin/communications" element={<ProtectedRoute requireAdmin><AdminCommunications /></ProtectedRoute>} />
+        <Route path="/admin/requests" element={<ProtectedRoute requireAdmin><AdminRequests /></ProtectedRoute>} />
 
         {/* Scorer Routes */}
         <Route path="/scorer" element={<ScorerHome />} />
@@ -83,11 +91,14 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <AuthProvider>
+          <OfflineBanner />
+          <AppContent />
+        </AuthProvider>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

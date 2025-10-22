@@ -21,6 +21,7 @@ import {
   fetchPlayerUpdateRequests,
   fetchPendingPlayerUpdateRequests,
 } from '../../services/requestService';
+import AIStatsAnalyzer from '../../components/AIStatsAnalyzer';
 
 export default function PlayerDashboard() {
   const { currentUser, loading: authLoading } = useAuth();
@@ -278,6 +279,12 @@ export default function PlayerDashboard() {
               Update Status
             </Link>
           </div>
+        </div>
+
+        {/* AI Scorecard Analyzer */}
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">AI Scorecard Analysis</h2>
+          <AIStatsAnalyzer />
         </div>
       </div>
     </div>

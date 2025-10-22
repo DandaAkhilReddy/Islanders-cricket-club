@@ -5,6 +5,7 @@ import { DollarSign, Plus, TrendingDown, TrendingUp, Wallet, AlertCircle } from 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { formatFixed } from '../utils/number';
+import { useAuth } from '../contexts/AuthContext';
 import type { Expense } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';
@@ -14,6 +15,7 @@ import EmptyState from '../components/EmptyState';
 import ProgressRing from '../components/ProgressRing';
 
 export default function Budget() {
+  const { isAdmin } = useAuth();
   const [expenses, setExpenses] = useState<(Expense & { id: string })[]>([]);
   const [loading, setLoading] = useState(true);
   const totalBudget = 50000;
@@ -77,14 +79,24 @@ export default function Budget() {
   return (
     <div className="space-y-6">
       {/* Simple Header */}
-      <div className="flex items-center gap-4">
-        <div className="p-3 rounded-lg bg-soft-orange-100">
-          <DollarSign className="w-6 h-6 text-soft-orange-600" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-lg bg-soft-orange-100">
+            <DollarSign className="w-6 h-6 text-soft-orange-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Budget & Finances</h1>
+            <p className="text-sm text-gray-600">Complete financial transparency - track every dollar</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Budget & Finances</h1>
-          <p className="text-sm text-gray-600">Complete financial transparency - track every dollar</p>
-        </div>
+        {isAdmin && (
+          <Link to="/admin/budget/add">
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Expense
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Stats */}
@@ -134,12 +146,14 @@ export default function Budget() {
       <div>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white">Recent Expenses</h2>
-          <Link to="/admin/budget/add">
-            <Button variant="primary" className="flex items-center gap-2">
-              <Plus className="w-5 h-5" />
-              Add Expense
-            </Button>
-          </Link>
+          {isAdmin && (
+            <Link to="/admin/budget/add">
+              <Button variant="primary" className="flex items-center gap-2">
+                <Plus className="w-5 h-5" />
+                Add Expense
+              </Button>
+            </Link>
+          )}
         </div>
 
         {expenses.length === 0 ? (

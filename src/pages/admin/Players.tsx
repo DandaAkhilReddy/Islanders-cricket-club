@@ -9,8 +9,8 @@ import Avatar from '../../components/Avatar';
 import Badge from '../../components/Badge';
 import EmptyState from '../../components/EmptyState';
 import type { Column } from '../../components/DataTable';
-// import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-// import { db } from '../../lib/firebase';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 import type { Player, PlayerRole } from '../../types';
 import toast, { Toaster } from 'react-hot-toast';
 
