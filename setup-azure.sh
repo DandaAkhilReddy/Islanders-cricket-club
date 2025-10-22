@@ -49,9 +49,9 @@ echo "✅ Storage account ready!"
 echo ""
 
 # Step 4: Create blob container
-echo "Step 4: Creating blob container 'islanders-data'..."
+echo "Step 4: Creating blob container 'islandersdata'..."
 az storage container create \
-  --name islanders-data \
+  --name islandersdata \
   --account-name islanderscricket \
   --public-access blob \
   --output table
@@ -67,7 +67,7 @@ echo ""
 echo "Step 5: Generating SAS token (valid for 1 year)..."
 SAS_TOKEN=$(az storage container generate-sas \
   --account-name islanderscricket \
-  --name islanders-data \
+  --name islandersdata \
   --permissions racwdl \
   --expiry 2026-10-17 \
   --output tsv)
@@ -78,7 +78,7 @@ echo "✅ Azure Storage Setup Complete!"
 echo "==================================="
 echo ""
 echo "Storage Account: islanderscricket"
-echo "Container: islanders-data"
+echo "Container: islandersdata"
 echo "Location: Central US"
 echo ""
 echo "🔑 Your SAS Token:"
@@ -91,13 +91,22 @@ echo ""
 echo "1. Copy the SAS token above"
 echo ""
 echo "2. Update your .env file:"
+echo "   VITE_AZURE_STORAGE_ACCOUNT_NAME=islanderscricket"
 echo "   VITE_AZURE_STORAGE_SAS_TOKEN=$SAS_TOKEN"
 echo ""
-echo "3. Add to Vercel:"
-echo "   vercel env add VITE_AZURE_STORAGE_SAS_TOKEN production"
-echo "   (paste the SAS token when prompted)"
+echo "3. Add to your hosting provider (choose one):"
+echo "   Netlify CLI:"
+echo "     netlify env:set VITE_AZURE_STORAGE_ACCOUNT_NAME islanderscricket"
+echo "     netlify env:set VITE_AZURE_STORAGE_SAS_TOKEN \"$SAS_TOKEN\""
 echo ""
-echo "4. Redeploy to Vercel:"
+echo "   Vercel CLI:"
+echo "     vercel env add VITE_AZURE_STORAGE_ACCOUNT_NAME production"
+echo "     vercel env add VITE_AZURE_STORAGE_SAS_TOKEN production"
+echo "     (paste the values when prompted)"
+echo ""
+echo "4. Redeploy your site:"
+echo "   netlify deploy --prod"
+echo "   # or"
 echo "   vercel --prod"
 echo ""
 echo "==================================="

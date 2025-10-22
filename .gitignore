@@ -26,3 +26,8 @@ dist-ssr
 .vercel
 
 .env
+.env.*
+!.env.example
+
+# Local Netlify folder
+.netlify
