@@ -14,9 +14,10 @@ const requiredEnvVars = [
 // Check if running in development mode
 export const isDevelopment = import.meta.env.DEV;
 export const isProduction = import.meta.env.PROD;
+const usingFirebaseEmulator = import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true';
 
 // Validate environment variables in development
-if (isDevelopment) {
+if (isDevelopment && !usingFirebaseEmulator) {
   const missing = requiredEnvVars.filter(
     (key) => !import.meta.env[key]
   );
@@ -26,21 +27,36 @@ if (isDevelopment) {
       'Please check your .env file'
     );
   }
+} else if (isDevelopment && usingFirebaseEmulator) {
+  console.info('[config] Firebase emulator mode enabled. Remote environment variables are optional.');
 }
 
 /**
  * Firebase Configuration
  */
-export const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-} as const;
+const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID || 'islanders-demo';
+
+export const firebaseConfig = usingFirebaseEmulator
+  ? {
+      apiKey: 'demo-api-key',
+      authDomain: 'localhost',
+      projectId,
+      storageBucket: `${projectId}.appspot.com`,
+      messagingSenderId: 'demo-sender',
+      appId: 'demo-app-id',
+      measurementId: undefined,
+      databaseURL: undefined,
+    } as const
+  : {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID,
+      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+      databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+    } as const;
 
 /**
  * Azure Storage Configuration

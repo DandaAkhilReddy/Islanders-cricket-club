@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:6500": "vite --host --port 6500",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "emulators": "npx firebase emulators:start --only firestore,auth,storage --project islanders-demo"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.29.1",
@@ -52,6 +54,7 @@
     "@testing-library/react": "^16.0.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/user-event": "^14.5.2",
+    "@testing-library/dom": "^10.4.0",
     "jsdom": "^25.0.0"
   }
 }

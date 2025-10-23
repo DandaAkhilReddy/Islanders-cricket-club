@@ -85,7 +85,22 @@ Copy `.env.example` to `.env` and fill in your project-specific values. The appl
 | `VITE_GEMINI_API_KEY` | (Optional) Google Gemini key for AI scorecard analysis |
 | `VITE_ENABLE_LOGGING` | Set to `true` to force console logging outside development |
 
-### 3. Provision Azure Blob Storage (Media & Stats)
+### 3. Start the Firebase Emulator (optional for local testing)
+To run the admin tools without touching the production database, enable the Firebase emulator bundle:
+
+1. Set `VITE_USE_FIREBASE_EMULATOR=true` in your `.env`. Adjust the optional host/port values if you have custom ports.
+2. In one terminal window start the emulators:
+   ```bash
+   npm run emulators
+   ```
+3. In a second terminal start the Vite dev server on the requested port:
+   ```bash
+   npm run dev:6500
+   ```
+   The app will now talk to the local Firestore/Auth/Storage emulators (default ports 8080/9099/9199).
+   > **Note:** The Firebase Auth emulator does not support Google OAuth popups. Use `firebase auth:import` or the Emulator UI to create test users.
+
+### 4. Provision Azure Blob Storage (Media & Stats)
 Run the helper script to create the storage account resources and generate a SAS token:
 
 ```bash
@@ -95,7 +110,7 @@ chmod +x setup-azure.sh
 
 The script will output the `VITE_AZURE_STORAGE_ACCOUNT_NAME` (`islanderscricket`) and a SAS token. Add both values to `.env` and to your hosting provider's environment settings (Netlify or Vercel).
 
-### 4. Deploy Firebase Security Rules
+### 5. Deploy Firebase Security Rules
 Deploy the Firestore and Storage rules to keep data protected:
 
 ```bash
@@ -113,19 +128,19 @@ firebase deploy --only firestore:rules
 firebase deploy --only storage:rules
 ```
 
-### 5. Run Development Server
+### 6. Run Development Server
 ```bash
-npm run dev -- --host
+npm run dev:6500
 ```
 
-The application will be available at the URL printed in the terminal (default `http://localhost:5173`).
+The application will be available at `http://localhost:6500` (or the host/port you specify). To expose it on your LAN, append `--host` to the command.
 
-### 6. Run the Test Suite
+### 7. Run the Test Suite
 ```bash
 npm run test
 ```
 
-### 7. Build for Production
+### 8. Build for Production
 ```bash
 npm run build
 ```

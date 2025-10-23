@@ -1,9 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createOrUpdateUser } from '../services/userService';
 
-const firebaseAppMock = vi.hoisted(() => ({
-  initializeApp: vi.fn(() => ({})),
-}));
+const firebaseAppMock = vi.hoisted(() => {
+  const appInstance = {};
+  return {
+    initializeApp: vi.fn(() => appInstance),
+    getApp: vi.fn(() => appInstance),
+    getApps: vi.fn(() => []),
+  };
+});
 
 vi.mock('firebase/app', () => firebaseAppMock);
 
@@ -17,6 +22,7 @@ const firebaseAuthMock = vi.hoisted(() => {
   return {
     getAuth,
     GoogleAuthProvider: MockGoogleAuthProvider,
+    connectAuthEmulator: vi.fn(),
   };
 });
 
@@ -24,6 +30,7 @@ vi.mock('firebase/auth', () => firebaseAuthMock);
 
 const firebaseStorageMock = vi.hoisted(() => ({
   getStorage: vi.fn(() => ({})),
+  connectStorageEmulator: vi.fn(),
 }));
 
 vi.mock('firebase/storage', () => firebaseStorageMock);
@@ -47,6 +54,7 @@ const firestoreMocks = vi.hoisted(() => {
     timestampNow,
     timestampNowValue,
     getFirestore,
+    connectFirestoreEmulator: vi.fn(),
   };
 });
 
@@ -58,6 +66,7 @@ vi.mock('firebase/firestore', () => ({
   serverTimestamp: firestoreMocks.serverTimestamp,
   getFirestore: (...args: unknown[]) => firestoreMocks.getFirestore(...args),
   Timestamp: { now: firestoreMocks.timestampNow },
+  connectFirestoreEmulator: (...args: unknown[]) => firestoreMocks.connectFirestoreEmulator(...args),
 }));
 
 const {

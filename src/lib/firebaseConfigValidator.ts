@@ -31,6 +31,17 @@ const OPTIONAL_CONFIG_VARS = [
  * @returns Validation result with details about missing or invalid variables
  */
 export function validateFirebaseConfig(): FirebaseConfigValidation {
+  const usingEmulator = import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true';
+
+  if (usingEmulator) {
+    return {
+      isValid: true,
+      missingVars: [],
+      invalidVars: [],
+      warnings: ['Firebase emulator mode enabled. Remote Firebase keys are not required.'],
+    };
+  }
+
   const missingVars: string[] = [];
   const invalidVars: string[] = [];
   const warnings: string[] = [];
@@ -83,34 +94,40 @@ export function validateFirebaseConfig(): FirebaseConfigValidation {
 export function logFirebaseConfigValidation(): void {
   const validation = validateFirebaseConfig();
 
+  if (import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true') {
+    console.info('[firebase] Emulator mode detected. Skipping remote configuration validation.');
+    validation.warnings.forEach(w => console.warn(`[firebase] ${w}`));
+    return;
+  }
+
   if (!validation.isValid) {
-    console.error('❌ Firebase Configuration Error:');
+    console.error('[firebase] Configuration error detected:');
 
     if (validation.missingVars.length > 0) {
-      console.error('Missing required environment variables:');
+      console.error('[firebase] Missing required environment variables:');
       validation.missingVars.forEach(v => console.error(`  - ${v}`));
     }
 
     if (validation.invalidVars.length > 0) {
-      console.error('Invalid environment variables:');
+      console.error('[firebase] Invalid environment variables:');
       validation.invalidVars.forEach(v => console.error(`  - ${v}`));
     }
 
-    console.error('\n💡 Solution:');
-    console.error('1. Check your .env file in the project root');
-    console.error('2. Ensure all VITE_FIREBASE_* variables are set correctly');
-    console.error('3. For Azure deployment, add these variables in Azure Portal:');
-    console.error('   Static Web Apps → Configuration → Application settings');
+    console.error('\n[firebase] Suggested fixes:');
+    console.error('[firebase] 1. Check your .env file in the project root');
+    console.error('[firebase] 2. Ensure all VITE_FIREBASE_* variables are set correctly');
+    console.error('[firebase] 3. For Azure deployment, add these variables in Azure Portal:');
+    console.error('[firebase]    Static Web Apps → Configuration → Application settings');
 
     throw new Error('Firebase configuration is invalid. Check console for details.');
   }
 
   if (validation.warnings.length > 0) {
-    console.warn('⚠️ Firebase Configuration Warnings:');
+    console.warn('[firebase] Configuration warnings:');
     validation.warnings.forEach(w => console.warn(`  - ${w}`));
   }
 
-  console.log('✅ Firebase configuration validated successfully');
+  console.log('[firebase] Configuration validated successfully.');
 }
 
 /**
